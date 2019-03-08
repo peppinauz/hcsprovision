@@ -177,7 +177,7 @@ for row in csv_f:
             #    webaccess="disable"
 
             ## DEBUG: FMO
-            print("FMO,,"+fmocmg[cmg]['primary']+","+fmocmg[cmg]['secondary']+","+row['Device Type']+","+row['Device Name']+","+"p"+row['Directory Number 1']+","+fmopass,",enable,,", file=fmoresetphone)
+            print("FMO,agencias-cl2,"+fmocmg[cmg]['primary']+","+fmocmg[cmg]['secondary']+","+row['Device Type']+","+row['Device Name']+","+"p"+row['Directory Number 1']+","+fmopass,",enable,,", file=fmoresetphone)
             #print("FMO,,"+fmocmg[cmg]['primary']+","+fmocmg[cmg]['secondary']+","+","+row['Device Type']+","+row['Device Name']+","+"p"+row['Directory Number 1']+","+fmopass,",enable")
 
             ## YAML??
