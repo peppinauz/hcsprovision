@@ -16,7 +16,7 @@ if len(sys.argv) != 6:
     exit(1)
 else:
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]  
+    fmositedata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     logconfigfile=sys.argv[5]   ## LOG config file
@@ -33,10 +33,10 @@ print("(II) INPUT LOG configuration file :: ",logconfigfile, file=f)
 print("(II) INPUT Cluster Path           :: ",clusterpath, file=f)
 
 cl=clusterpath[14:16]       ## CL = dos digitos, 01, 02, 03,...
-    
+
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -45,7 +45,7 @@ with open(fmostaticdata, "r") as fp:
                 #print("<<<<   ",fmoenvconfig[key])
 fp.close()
 
-# CMO datos del site 
+# CMO datos del site
 data = {}
 #data['dp'] = []
 #data['loc']=[]
@@ -61,23 +61,23 @@ data = {}
 #agencia={}
 
 with open(fmositedata,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 #FMO working path:
 sitepath="../FMO/"+siteslc
 
-templateblkfile = "../code/blk/09.OFF-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/09.OFF-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/09.off."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA
-hierarchynode=fmoenvconfig['hierarchynode'] 
-customerid=fmoenvconfig['fmocustomerid'] 
+hierarchynode=fmoenvconfig['hierarchynode']
+customerid=fmoenvconfig['fmocustomerid']
 aargroup=fmoenvconfig['fmoaargroup']
 ##
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']  
-cmg=data['fmosite'][0]['cmg']  
+fmositeid=data['fmosite'][0]['id']
+cmg=data['fmosite'][0]['cmg']
 
 # CMO patterns
 cmodevicepool=siteslc+"-DP"
@@ -93,19 +93,19 @@ devicepool=cucdmsite+"-DevicePool"
 location=cucdmsite+"-Location"
 devicecss=cucdmsite+"-BRADP-DBRDevice-CSS"
 subscribecss=cucdmsite+"-InternalOnly-CSS"
-preisrpt=customerid+"-PreISR-PT" 
-preisrcss=customerid+"-PreISR-CSS" 
-isrpt=customerid+"-ISR-PT" 
+preisrpt=customerid+"-PreISR-PT"
+preisrcss=customerid+"-PreISR-CSS"
+isrpt=customerid+"-ISR-PT"
 isrcss=customerid+"-ISR-CSS"
 dirnumpt=customerid+"-DirNum-PT"
 dirnumcss=customerid+"-DirNum-CSS"
 nullpt=customerid+"-NoMigrado-PT"
-siterange="5"+siteslc+"XXXX" 
+siterange="5"+siteslc+"XXXX"
 
 # CMO File INPUT DATA
 #fgw = open(inputfilehp,"r")
 #csv_f = csv.reader(fgw)
- 
+
 # FMO File OUTPUT DATA
 blk = openpyxl.load_workbook(templateblkfile)
 
@@ -113,8 +113,8 @@ fila=7
 
 print("(II) BLK Site activation: ",siteslc,file=f)
 
-###################################################### 
-## Des-Habilitamos el routing del site en  PreISR 
+######################################################
+## Des-Habilitamos el routing del site en  PreISR
 sheet = blk["TPpreISR"]
 sheet['B'+str(fila)]=hierarchynode+"."+fmositename
 sheet['C'+str(fila)]="modify"
@@ -145,7 +145,7 @@ sheet['aj'+str(fila)]="Cisco CallManager"          # calledPartyNumberType
 sheet['al'+str(fila)]="false"                      # patternUrgency
 sheet['am'+str(fila)]="Default"                    # callingLinePresentationBit
 
-###################################################### 
+######################################################
 ## Eliminamos el routing del site en  ILS
 sheet = blk["ILS"]
 sheet['B'+str(fila)]=hierarchynode+"."+fmositename
@@ -172,7 +172,7 @@ fila+=1
 for hp in data['huntpilot']:
     fila+=1
     #print(hp)
-    ###################################################### 
+    ######################################################
     ## Habilitamos el routing del site en  PreISR
     sheet = blk["TPpreISR"]
     sheet['B'+str(fila)]=hierarchynode+"."+fmositename
@@ -204,7 +204,7 @@ for hp in data['huntpilot']:
     sheet['al'+str(fila)]="false"                      # patternUrgency
     sheet['am'+str(fila)]="Default"                    # callingLinePresentationBit
 
-    ###################################################### 
+    ######################################################
     ## Des-Habilitamos el routing del site en  ILS
     sheet = blk["ILS"]
     sheet['B'+str(fila)]=hierarchynode+"."+fmositename
@@ -216,7 +216,7 @@ for hp in data['huntpilot']:
     sheet['l'+str(fila)]="Enterprise Number"           # patternType
     sheet['m'+str(fila)]=fmositename                   # Description
 
-    fila+=1   
+    fila+=1
 
 ## FMO File OUTPUT DATA: Close
 blk.save(outputblkfile)

@@ -71,7 +71,7 @@ sitepath="../FMO/"+siteslc
 #inputfile = clusterpath+"/directorynumber.csv"  ## ORIGINAL
 inputfile = clusterpath+"/phone.mod1.csv"   ## Modificado
 
-templateblkfile = "../code/blk/04.phone-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/04.phone-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/05.phone."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA

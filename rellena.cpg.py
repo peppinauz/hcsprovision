@@ -16,7 +16,7 @@ if len(sys.argv) != 6:
     exit(1)
 else:
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]  
+    fmositedata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     logconfigfile=sys.argv[5]   ## LOG config file
@@ -31,10 +31,10 @@ print("(II) INPUT datos de entorno       ::",fmostaticdata, file=f)
 print("(II) INPUT SLC                    :: ",siteslc, file=f)
 print("(II) INPUT LOG configuration file :: ",logconfigfile, file=f)
 print("(II) INPUT Cluster Path           :: ",clusterpath, file=f)
-    
+
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -43,7 +43,7 @@ with open(fmostaticdata, "r") as fp:
                 #print("<<<<   ",fmoenvconfig[key])
 fp.close()
 
-# CMO datos del site 
+# CMO datos del site
 data = {}
 #data['dp'] = []
 #data['loc']=[]
@@ -60,7 +60,7 @@ data = {}
 cpg=[]
 
 with open(fmositedata,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 
@@ -68,7 +68,7 @@ infile.close()
 e164=data['e164'][0]['head']
 fmotrunkipaddr=data['gw'][0]['trunk']
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']  
+fmositeid=data['fmosite'][0]['id']
 cmg=data['fmosite'][0]['cmg']
 
 #FMO working path:
@@ -76,22 +76,22 @@ sitepath="../FMO/"+siteslc
 
 # CMO
 inputcpgfile = clusterpath+"/callpickupgroup.csv"
-templateblkfile = "../code/blk/02.cpg-template.xlsx"
+templateblkfile = "blk/02.cpg-template.xlsx"
 outputblkfile = sitepath+"/02.cpg."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA
-hierarchynode=fmoenvconfig['hierarchynode'] 
-customerid=fmoenvconfig['fmocustomerid'] 
+hierarchynode=fmoenvconfig['hierarchynode']
+customerid=fmoenvconfig['fmocustomerid']
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id'] 
+fmositeid=data['fmosite'][0]['id']
 cucdmsite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)
-preisrpt=customerid+"-PreISR-PT" 
-preisrcss=customerid+"-PreISR-CSS" 
-isrpt=customerid+"-ISR-PT" 
+preisrpt=customerid+"-PreISR-PT"
+preisrcss=customerid+"-PreISR-CSS"
+isrpt=customerid+"-ISR-PT"
 isrcss=customerid+"-ISR-CSS"
 dirnumpt=customerid+"-DirNum-PT"
 dirnumcss=customerid+"-DirNum-CSS"
-featurept=cucdmsite+"-Feature-PT" 
+featurept=cucdmsite+"-Feature-PT"
 
 ## CMO pattern
 range=siteslc+"-"
@@ -140,9 +140,9 @@ blk.save(outputblkfile)
 
 ## Guardo los Hunt pilot patterns
 with open(fmositedata,'w') as outfile:
-    #data = json.load(outfile) 
+    #data = json.load(outfile)
     data['cpgnumber']=cpg
-    json.dump(data,outfile) 
+    json.dump(data,outfile)
 outfile.close()
 
 ## LOG de CONFIGURACION

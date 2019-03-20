@@ -73,7 +73,7 @@ gatewayslot=clusterpath+"/gateway.slot.csv"      ## Fichero con tarjetas del GW
 gatewayanalog=clusterpath+"/gateway.analog.csv"  ## Fichero con puertos analogicos
 ##gatewayh323=clusterpath+"/gateway.h323.csv"      ## Fichero con Trunks H323 (no se usa)
 ##
-templateblkfile = "../code/blk/03.gw-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/03.gw-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/03.gw."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA

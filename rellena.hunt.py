@@ -16,7 +16,7 @@ if len(sys.argv) != 6:
     exit(1)
 else:
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]  
+    fmositedata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     logconfigfile=sys.argv[5]   ## LOG config file
@@ -33,10 +33,10 @@ print("(II) INPUT LOG configuration file :: ",logconfigfile, file=f)
 print("(II) INPUT Cluster Path           :: ",clusterpath, file=f)
 
 cl=clusterpath[14:16]       ## CL = dos digitos, 01, 02, 03,...
-    
+
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -45,7 +45,7 @@ with open(fmostaticdata, "r") as fp:
                 #print("<<<<   ",fmoenvconfig[key])
 fp.close()
 
-# CMO datos del site 
+# CMO datos del site
 data = {}
 #data['dp'] = []
 #data['loc']=[]
@@ -56,13 +56,13 @@ data = {}
 #data['rsc'] = []
 #data['e164'] = []
 #data['agencia'] = []
- 
+
 
 #e164={}
 #agencia={}
 
 with open(fmositedata,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 #FMO working path:
@@ -74,17 +74,17 @@ inputfilehp = clusterpath+"/huntpilot.csv"      ## ORIGINAL
 #inputfilelg = clusterpath+"/linegroup.csv"      ## ORIGINAL ->
 inputfilelg = clusterpath+"/linegroup.mod2.csv"      ## MOD
 
-templateblkfile = "../code/blk/06.hunt-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/06.hunt-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/06.hunt."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA
-hierarchynode=fmoenvconfig['hierarchynode'] 
-customerid=fmoenvconfig['fmocustomerid'] 
+hierarchynode=fmoenvconfig['hierarchynode']
+customerid=fmoenvconfig['fmocustomerid']
 aargroup=fmoenvconfig['fmoaargroup']
 ##
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']  
-cmg=data['fmosite'][0]['cmg']  
+fmositeid=data['fmosite'][0]['id']
+cmg=data['fmosite'][0]['cmg']
 
 # CMO patterns
 cmodevicepool=siteslc+"-DP"
@@ -100,19 +100,19 @@ devicepool=cucdmsite+"-DevicePool"
 location=cucdmsite+"-Location"
 devicecss=cucdmsite+"-BRADP-DBRDevice-CSS"
 subscribecss=cucdmsite+"-InternalOnly-CSS"
-preisrpt=customerid+"-PreISR-PT" 
-preisrcss=customerid+"-PreISR-CSS" 
-isrpt=customerid+"-ISR-PT" 
+preisrpt=customerid+"-PreISR-PT"
+preisrcss=customerid+"-PreISR-CSS"
+isrpt=customerid+"-ISR-PT"
 isrcss=customerid+"-ISR-CSS"
 dirnumpt=customerid+"-DirNum-PT"
 dirnumcss=customerid+"-DirNum-CSS"
-fwdhuntcss=cucdmsite+"-HPFWD-CSS" 
+fwdhuntcss=cucdmsite+"-HPFWD-CSS"
 
 # CMO File INPUT DATA
 fgw = open(inputfilehp,"r")
 csv_f = csv.DictReader(fgw)
 #csv_f = csv.reader(fgw)
- 
+
 # FMO File OUTPUT DATA
 blk = openpyxl.load_workbook(templateblkfile)
 
@@ -124,9 +124,9 @@ hunt=[]
 huntpilot=[]
 linegroup=[]
 
-###################################################### 
+######################################################
 ## CMO HUNT PILOT
-###################################################### 
+######################################################
 print("(II): CMO Hunt Pilots site",siteslc,file=f)
 
 for row in csv_f:
@@ -135,14 +135,14 @@ for row in csv_f:
         if row['HUNT PILOT'][1:].startswith(siteslc):
             ## DEBUG
             #print("HL#",fila,row['HUNT PILOT']," ##L",fila,"##: ",file=f)
-            ###################################################### 
+            ######################################################
             ## HUNT PILOT
-            ###################################################### 
+            ######################################################
             sheet =  blk["HP"]
-            sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+            sheet['B'+str(fila)]=hierarchynode+"."+fmositename
             sheet['C'+str(fila)]=action
             #sheet['D'+str(fila)]="name:"+row[3] # Search field
-            ###################################################### 
+            ######################################################
             sheet['i'+str(fila)]=row['PARK MONITOR FORWARD NO RETRIEVE DESTINATION']                               # parkMonForwardNoRetrieve.destination
             sheet['j'+str(fila)]="false"                               # parkMonForwardNoRetrieve.usePersonalPreferences
             sheet['k'+str(fila)]=fwdhuntcss                                    # #parkMonForwardNoRetrieve.callingSearchSpaceName
@@ -160,7 +160,7 @@ for row in csv_f:
             sheet['w'+str(fila)]=""                                     # callingPartyTransformationMask
             sheet['x'+str(fila)]=row['HUNT PILOT']                      # pattern
             sheet['y'+str(fila)]=""                                     #patternPrecedence
-            sheet['z'+str(fila)]=""                                    # prefixDigitsOut            
+            sheet['z'+str(fila)]=""                                    # prefixDigitsOut
             sheet['aa'+str(fila)]=""                                     # #maxHuntduration
             sheet['ab'+str(fila)]="Cisco CallManager"                   # calledPartyNumberingPlan
             ##
@@ -197,9 +197,9 @@ for row in csv_f:
             hunt.append(row['HUNT LIST 1'])
             huntpilot.append(row['HUNT PILOT']) ## Lo guardamos para desactivar/activar los patrones
 
-            ###################################################### 
-            ###################################################### 
-            ###################################################### 
+            ######################################################
+            ######################################################
+            ######################################################
             ## Creamos el routing para los HP PreISR
             sheet = blk["TPpreISR"]
             sheet['B'+str(fila)]=hierarchynode+"."+fmositename
@@ -231,9 +231,9 @@ for row in csv_f:
             sheet['al'+str(fila)]="false"                      # patternUrgency
             sheet['am'+str(fila)]="Default"                    # callingLinePresentationBit
 
-            ###################################################### 
-            ###################################################### 
-            ###################################################### 
+            ######################################################
+            ######################################################
+            ######################################################
             ## Creamos el routing para los HP PreISR
             sheet = blk["TPISR"]
             sheet['B'+str(fila)]=hierarchynode+"."+fmositename
@@ -275,14 +275,14 @@ print("(II) HUNT LIST NAMES:",hunt,file=f)
 print("(II) HUNT LIST NUMBERS:",huntpilot,file=f)
 ## Guardo los Hunt pilot patterns
 with open(fmositedata,'w') as outfile:
-    #data = json.load(outfile) 
+    #data = json.load(outfile)
     data['huntpilot']=huntpilot
-    json.dump(data,outfile) 
+    json.dump(data,outfile)
 outfile.close()
 
-###################################################### 
+######################################################
 ## CMO HUNT LIST
-###################################################### 
+######################################################
 print("(II): CMO Hunt Lists site",siteslc,file=f)
 
 # CMO File INPUT DATA
@@ -296,14 +296,14 @@ for row in csv_f:           ## WR BLK OUTPUT DATA
     for hlname in hunt:
         if len(row) != 0:   ## Me salto las líneas vacias
             if row['NAME'] == hlname:
-                ###################################################### 
+                ######################################################
                 ## HUNT LIST
                 ######################################################
                 sheet =  blk["HL"]
-                sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(fila)]=hierarchynode+"."+fmositename
                 sheet['C'+str(fila)]=action
                 #sheet['D'+str(fila)]="name:"+row[3] # Search field
-                ###################################################### 
+                ######################################################
 
                 sheet['i'+str(fila)]="false"                                # voiceMailUsage
                 sheet['j'+str(fila)]=cmg                                    # callManagerGroupName
@@ -332,7 +332,7 @@ for row in csv_f:           ## WR BLK OUTPUT DATA
                     sheet['u'+str(fila)]=row['SELECTION ORDER 5']                            # members.member.4.selectionOrder
                     sheet['v'+str(fila)]=row['LINE GROUP 5']                            # members.member.4.lineGroupName
                     linegroup.append(row['LINE GROUP 5'])
-                
+
                 fila+=1
 
 ## CMO File INPUT DATA: Close
@@ -341,9 +341,9 @@ fgw.close()
 ## DEBUG
 print("(II) LINE GROUP ::",linegroup,file=f)
 
-###################################################### 
+######################################################
 ## CMO LINE GROUP
-###################################################### 
+######################################################
 print("(II) CMO Line Group site",siteslc,file=f)
 
 # CMO File INPUT DATA
@@ -378,14 +378,14 @@ for row in csv_f:               ## WR BLK OUTPUT DATA
         if len(row) != 0:       ## Me salto las líneas vacias
             if row[1] == lgname:
                 #print("Buscando ",lgname," en",row[1],file=f)
-                ##################################################### 
+                #####################################################
                 ## LINE GROUP
-                ###################################################### 
+                ######################################################
                 sheet =  blk["LG"]
-                sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(fila)]=hierarchynode+"."+fmositename
                 sheet['C'+str(fila)]=action
                 #sheet['D'+str(fila)]="name:"+row[3] # Search field
-                ###################################################### 
+                ######################################################
 
                 sheet['j'+str(fila)]=row[1]                             # name
                 sheet['k'+str(fila)]=row[2]      # distributionAlgorithm
@@ -393,19 +393,19 @@ for row in csv_f:               ## WR BLK OUTPUT DATA
                 sheet['o'+str(fila)]="false"                                 # autoLogOffHunt
 
                 if "Hunt" in row[3]:                 # huntAlgorithmNoAnswer -> CMO #3
-                    sheet['i'+str(fila)]="Try next member; then, try next group in Hunt List"                                
+                    sheet['i'+str(fila)]="Try next member; then, try next group in Hunt List"
                 else:
-                    sheet['i'+str(fila)]="Try next member, but do not go to next group"                                
-               
+                    sheet['i'+str(fila)]="Try next member, but do not go to next group"
+
                 if "Hunt" in row[5]:                # huntAlgorithmNotAvailable -> CMO #5
-                    sheet['l'+str(fila)]="Try next member; then, try next group in Hunt List"                                 
+                    sheet['l'+str(fila)]="Try next member; then, try next group in Hunt List"
                 else:
-                    sheet['l'+str(fila)]="Try next member, but do not go to next group"                                
+                    sheet['l'+str(fila)]="Try next member, but do not go to next group"
 
                 if "Hunt" in row[4]:                # huntAlgorithmBusy -> CMO #4
-                    sheet['n'+str(fila)]="Try next member; then, try next group in Hunt List"                                
+                    sheet['n'+str(fila)]="Try next member; then, try next group in Hunt List"
                 else:
-                    sheet['n'+str(fila)]="Try next member, but do not go to next group"                                
+                    sheet['n'+str(fila)]="Try next member, but do not go to next group"
 
                 ## Terna de valores que se repite
                 #sheet[''+str(fila)]=row[]                   ## M=12        # members.member.0.directoryNumber.pattern
@@ -415,10 +415,10 @@ for row in csv_f:               ## WR BLK OUTPUT DATA
                 colnum=1
                 colvalid=16
                 for col in row:
-                    if colnum > 6 and col != "": 
-                    #if colnum > 6: 
+                    if colnum > 6 and col != "":
+                    #if colnum > 6:
                         #print("[",fila,"][",colvalid,"]=",col,file=f)
-                        if col == "Interna-PT":     
+                        if col == "Interna-PT":
                             sheet.cell(row=fila,column=colvalid).value=emlinept
                         elif col == "Interna-EM-PT":
                             sheet.cell(row=fila,column=colvalid).value=linept

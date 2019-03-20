@@ -74,7 +74,7 @@ inputfilehp = clusterpath+"/huntpilot.csv"      ## ORIGINAL
 #inputfilelg = clusterpath+"/linegroup.csv"      ## ORIGINAL ->
 inputfilelg = clusterpath+"/linegroup.mod2.csv"      ## MOD
 
-templateblkfile = "../code/blk/06.newhuntrouting-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/06.newhuntrouting-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/07.newhuntrouting."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA

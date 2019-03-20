@@ -10,10 +10,10 @@ import json
 
 if len(sys.argv) != 5:
     print("ERROR: python3 <nombre-fichero.py> <datos de entorno> <cmo site data> XXXX <log-config-file>")
-    print(">>>>  Datos de entorno: ",sys.argv[1]) 
+    print(">>>>  Datos de entorno: ",sys.argv[1])
     print(">>>>  [2] cmo site data: <nombre-fichero-con-datos de config CMO>")
     print(">>>>  [3] XXXX: SLC")
-    print(">>>>  [4] config log file: ../FMO/XXXX/logconfigfilename-.txt") 
+    print(">>>>  [4] config log file: ../FMO/XXXX/logconfigfilename-.txt")
     exit(1)
 else:
     fmostaticdata=sys.argv[1]   ## Datos de entorno: Maqueta/Produccion/...
@@ -51,7 +51,7 @@ data = {}
 #agencia={}
 
 with open(siteconfig,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 ## DEBUG
@@ -73,7 +73,7 @@ ndevices=devices[0]['phones']
 print("(II) Buscando CallManager Group", file=f)
 ################################################################
 ######## CMG
-with open(cmgfile, "r") as fp:         
+with open(cmgfile, "r") as fp:
     cmg = json.loads(fp.read())  ## variable de tipo diccionario
     #print("<<<<   ",cmg[key])
 fp.close()
@@ -104,7 +104,7 @@ else:
 
 with open (cmgfile, "w") as fp:
     fp.write(json.dumps(cmg))
-fp.close()  
+fp.close()
 
 
 
@@ -150,7 +150,7 @@ if xcambio == 'S':
                 print(">>>> Datos cambiados:",fmonagencia)
             else:
                 print(">>>> Descartando cambios")
-            
+
         elif opcion == 2:   ## Cambiar numero de cabecera
             print("Este es el número que hemos detectado >>> ",cabecera)
             print("El dial-plan de HCS implica que el formato sea +E164: +57AAXXXXYYYY")
@@ -167,7 +167,7 @@ if xcambio == 'S':
                 cabecera=nnum
         elif opcion == 0:
             running=False
-            ## 
+            ##
 
     ## Si ha habido algún cambio
     if not running: ## Se ha ejecutado el menu de cambios y volvemos a imprimir la info
@@ -197,12 +197,12 @@ print("(II)", file=f)
 ## Rellenamos el BLK del SITE.00
 #FMO working path:
 sitepath="../FMO/"+slc
-templateblkfile = "../code/blk/00.site-template.xlsx"   ## FMO SITE TEMPLATE
+templateblkfile = "blk/00.site-template.xlsx"   ## FMO SITE TEMPLATE
 outputblkfile = sitepath+"/00.site."+slc+".xlsx"    ## FMO BLK OUTPUT
 
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -219,7 +219,7 @@ fila=5
 
 sheet = blk["SITE"]
 ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-sheet['B'+str(fila)]=fmoenvconfig['hierarchynode'] 
+sheet['B'+str(fila)]=fmoenvconfig['hierarchynode']
 sheet['C'+str(fila)]="add"
 #sheet['D'+str(fila)]="name:"+row[3] # Search field
 ## datos dinamicos
@@ -270,7 +270,7 @@ print("(II) Data DUMP:: FIN", file=f)
 print("(II) ", file=f)
 
 with open(siteconfig,'w') as outfile:
-    json.dump(data,outfile) 
+    json.dump(data,outfile)
 outfile.close()
 
 ## LOG de CONFIGURACION

@@ -24,14 +24,14 @@ else:
     #print(">>>>  SLC:              ",sys.argv[3])
     #print(">>>>  Area code:        ",sys.argv[4])
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]  
+    fmositedata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     cl=clusterpath[14:16]       ## CL = dos digitos, 01, 02, 03,...
-    
+
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -41,7 +41,7 @@ with open(fmostaticdata, "r") as fp:
 fp.close()
 #print("<<<<>>>>>>   ",fmoenvconfig['fmocucmmanagementip'])
 
-# CMO datos del site 
+# CMO datos del site
 data = {}
 #data['dp'] = []
 #data['loc']=[]
@@ -57,7 +57,7 @@ data = {}
 #agencia={}
 
 with open(fmositedata,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 #FMO working path:
@@ -67,17 +67,17 @@ sitepath="../FMO/"+siteslc
 #inputfile = clusterpath+"/directorynumber.csv"  ## ORIGINAL
 inputfile = clusterpath+"/phone.mod1.csv"   ## Modificado
 
-templateblkfile = "../code/blk/04.phone-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/04.phone-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/05.phone."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA
-hierarchynode=fmoenvconfig['hierarchynode'] 
-customerid=fmoenvconfig['fmocustomerid'] 
+hierarchynode=fmoenvconfig['hierarchynode']
+customerid=fmoenvconfig['fmocustomerid']
 aargroup=fmoenvconfig['fmoaargroup']
 ##
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']  
-cmg=data['fmosite'][0]['cmg']  
+fmositeid=data['fmosite'][0]['id']
+cmg=data['fmosite'][0]['cmg']
 
 # CMO patterns
 cmodevicepool=siteslc+"-DP"
@@ -96,7 +96,7 @@ subscribecss=cucdmsite+"-InternalOnly-CSS"
 # CMO File INPUT DATA
 fgw = open(inputfile,"r")
 csv_f = csv.reader(fgw)
- 
+
 # FMO File OUTPUT DATA
 blk = openpyxl.load_workbook(templateblkfile)
 
@@ -113,14 +113,14 @@ for row in csv_f:
         if row[4].startswith(cmodevicepool) and row[2].startswith('SEP'):
             dn=1 ## Consideramos que siempre hay al menos una línea
             delta=84*(dn-1) #L1 - 1
-            ###################################################### 
+            ######################################################
             ## USER PHONE
-            ###################################################### 
+            ######################################################
             sheet =  blk["USER"]
-            sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+            sheet['B'+str(fila)]=hierarchynode+"."+fmositename
             sheet['C'+str(fila)]=action
             #sheet['D'+str(fila)]="name:"+row[3] # Search field
-            ###################################################### 
+            ######################################################
             sheet['i'+str(fila)]="p"+row[129]           # username
             sheet['j'+str(fila)]="p"+row[129]           # ps.username
             sheet['n'+str(fila)]="p"+row[129]           # rbac.username
@@ -139,14 +139,14 @@ for row in csv_f:
             ## DEBUG
             print("PH#",fila,row[2]," ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164])
 
-            ###################################################### 
+            ######################################################
             ## PHONE
-            ###################################################### 
+            ######################################################
             sheet =  blk["PHONE"]
-            sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+            sheet['B'+str(fila)]=hierarchynode+"."+fmositename
             sheet['C'+str(fila)]=action
             #sheet['D'+str(fila)]="name:"+row[3] # Search field
-            ###################################################### 
+            ######################################################
             sheet['i'+str(fila)]=""                         # directoryUrl
             sheet['j'+str(fila)]=row[54]                    # protocol
             sheet['k'+str(fila)]=""                         # secureInformationUrl
@@ -158,12 +158,12 @@ for row in csv_f:
             sheet['q'+str(fila)]="Brazil"                   #networkLocale
             sheet['r'+str(fila)]="Default"                  #ringSettingBusyBlfAudibleAlert
             sheet['t'+str(fila)]="Portuguese Brazil"        #userLocale
-            sheet['u'+str(fila)]="Default"                  #deviceMobilityMode 
+            sheet['u'+str(fila)]="Default"                  #deviceMobilityMode
             sheet['w'+str(fila)]="No Rollover"              # outboundCallRollover
             sheet['x'+str(fila)]=""                         # ip_address
             sheet['y'+str(fila)]=""                         # primaryPhoneName
             sheet['z'+str(fila)]=row[2]                     # name
-            #################### 
+            ####################
             sheet['aa'+str(fila)]="true"                    # retryVideoCallAsAudio
             sheet['ab'+str(fila)]="Default"                 # callInfoPrivacyStatus
             sheet['ad'+str(fila)]="Default"                 # phoneServiceDisplay
@@ -181,7 +181,7 @@ for row in csv_f:
             sheet['aw'+str(fila)]=location                  #locationName
             sheet['ay'+str(fila)]=devicepool                #devicepool
             sheet['az'+str(fila)]="false"                   #isDualMode
-            #################### 
+            ####################
             sheet['cl'+str(fila)]="No Pending Operation"    # certificateOperation
             sheet['co'+str(fila)]="false"                   #enableCallRoutingToRdWhenNoneIsActive
             #sheet['cp'+str(fila)]=row[63]                   #sipProfileName
@@ -189,7 +189,7 @@ for row in csv_f:
                 sheet['cp'+str(fila)]="Standard SIP Profile"    #sipProfileName
             sheet['cq'+str(fila)]="false"                   #allowCtiControlFlag    @@@@ TRUE para grabación
             sheet['cr'+str(fila)]="Default"                 #singleButtonBarge
-            sheet['ct'+str(fila)]="true"                    #enableExtensionMobility 
+            sheet['ct'+str(fila)]="true"                    #enableExtensionMobility
             sheet['cy'+str(fila)]="true"                    #useDevicePoolCgpnTransformCss
             sheet['cz'+str(fila)]="false"                   #traceFlag
             sheet['da'+str(fila)]="Default"                 #phoneSuite
@@ -198,7 +198,7 @@ for row in csv_f:
             sheet['df'+str(fila)]="false"                   #dndStatus
             sheet['di'+str(fila)]="Use System Default"      # networkLocation
             sheet['dj'+str(fila)]="false"                   # unattendedPort
-            #################### 
+            ####################
             sheet['dl'+str(fila)]=row[129]                  #  mobilityUserIdName
             #sheet['cm'+str(fila)]="" # versionStamp
             sheet['dn'+str(fila)]="Not Trusted"             #deviceTrustMode
@@ -225,7 +225,7 @@ for row in csv_f:
             sheet['eg'+str(fila)]="true"                    #lines.line.0.callInfoDisplay.callerName
             sheet['eh'+str(fila)]="false"                   #lines.line.0.callInfoDisplay.callerNumber
             sheet['ei'+str(fila)]=row[129+delta]            #lines.line.0.dirn.pattern
-            
+
             ## CSS depende de la PT
             if row[130] == "Interna-EM-PT": # Logica inversa
                 ## PT + CSS: EM+Phones sin EM
@@ -244,9 +244,9 @@ for row in csv_f:
                 fwdnocss=customerid+"-InternalOnly-CSS"
                 fwdallcss=customerid+"-InternalOnly-CSS"
 
-            sheet['ej'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName 
-            sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)  
-            #####################  
+            sheet['ej'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName
+            sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)
+            #####################
             sheet['ek'+str(fila)]="Use System Policy"       #lines.line.0.mwlPolicy
             sheet['el'+str(fila)]="Use System Default"      #lines.line.0.ringSettingIdlePickupAlert
             sheet['em'+str(fila)]=row[166+delta]            #lines.line.0.busyTrigger
@@ -265,9 +265,9 @@ for row in csv_f:
             sheet['fe'+str(fila)]=row[42]                   # product
             sheet['ff'+str(fila)]=row[3]                    # description
             sheet['fg'+str(fila)]="false"                   # sendGeoLocation
-            sheet['fh'+str(fila)]="p"+row[129]              # ownerUserName    @@@@@ 
+            sheet['fh'+str(fila)]="p"+row[129]              # ownerUserName    @@@@@
             sheet['fi'+str(fila)]="false"                   # ignorePresentationIndicators
-            ######################################################  
+            ######################################################
             sheet['fm'+str(fila)]="Phone"                   # class
             sheet['fn'+str(fila)]="Use Common Phone Profile Setting"     # dndOption
             sheet['fo'+str(fila)]="Standard Presence group" # presenceGroupName
@@ -282,13 +282,13 @@ for row in csv_f:
             ######################################################
             ##
             ## LINE: LINE #1
-            ##  
+            ##
             ######################################################
             ## DEBUG
             print("LN#",filadn,"                 ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164+delta])
 
             sheet = blk["LINE"]
-            sheet['B'+str(filadn)]=hierarchynode+"."+fmositename 
+            sheet['B'+str(filadn)]=hierarchynode+"."+fmositename
             sheet['C'+str(filadn)]=action
             #sheet['D'+str(filadn)]="name:"+row[3] # Search field
             ######################################################
@@ -298,7 +298,7 @@ for row in csv_f:
             sheet['m'+str(filadn)]=row[159+delta]                # CPG
             sheet['n'+str(filadn)]=row[188+delta]                #callForwardNotRegisteredInt.destination
             sheet['o'+str(filadn)]="false"                      #callForwardNotRegisteredInt.forwardToVoiceMail
-            sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName    
+            sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName
             sheet['q'+str(filadn)]=linept                       #routePartitionName
             sheet['r'+str(filadn)]=row[182+delta]                #callForwardOnFailure.destination
             sheet['s'+str(filadn)]="false"                      #callForwardOnFailure.forwardToVoiceMail
@@ -364,7 +364,7 @@ for row in csv_f:
             sheet['cl'+str(filadn)]=fwdnocss                    # callForwardNoAnswerInt.callingSearchSpaceName
             sheet['cn'+str(filadn)]="Standard Presence group"   #presenceGroupName
             filadn=filadn+1
-            
+
             ##
             ## LINE #2
             ##
@@ -375,9 +375,9 @@ for row in csv_f:
                 ## DEBUG
                 print("PH#",fila,row[2]," ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164])
 
-                ###################################################### 
+                ######################################################
                 ## PHONE
-                ###################################################### 
+                ######################################################
                 sheet =  blk["PHONE"]
                 ############################################
                 ##
@@ -402,7 +402,7 @@ for row in csv_f:
                 sheet['gp'+str(fila)]="true"                    #lines.line.0.callInfoDisplay.callerName
                 sheet['gq'+str(fila)]="false"                   #lines.line.0.callInfoDisplay.callerNumber
                 sheet['gr'+str(fila)]=row[129+delta]            #lines.line.0.dirn.pattern
-            
+
                 ## CSS depende de la PT
                 #if row[130+delta] == "Interna-EM-PT": # Logica inversa
                 #    ## PT + CSS: EM+Phones sin EM
@@ -421,9 +421,9 @@ for row in csv_f:
                 #    fwdnocss=customerid+"-InternalOnly-CSS"
                 #    fwdallcss=customerid+"-InternalOnly-CSS"
 
-                sheet['gs'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName 
-                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)  
-                #####################  
+                sheet['gs'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName
+                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)
+                #####################
                 sheet['gt'+str(fila)]="Use System Policy"       #lines.line.0.mwlPolicy
                 sheet['gu'+str(fila)]="Use System Default"      #lines.line.0.ringSettingIdlePickupAlert
                 sheet['gv'+str(fila)]=row[166+delta]            #lines.line.0.busyTrigger
@@ -433,13 +433,13 @@ for row in csv_f:
                 ######################################################
                 ##
                 ## LINE: LINE #2
-                ##  
+                ##
                 ######################################################
                 ## DEBUG
                 print("LN#",filadn,"                 ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164+delta])
 
                 sheet = blk["LINE"]
-                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename
                 sheet['C'+str(filadn)]=action
                 #sheet['D'+str(filadn)]="name:"+row[3] # Search field
                 ######################################################
@@ -449,7 +449,7 @@ for row in csv_f:
                 sheet['m'+str(filadn)]=row[159+delta]                # CPG
                 sheet['n'+str(filadn)]=row[188+delta]                #callForwardNotRegisteredInt.destination
                 sheet['o'+str(filadn)]="false"                      #callForwardNotRegisteredInt.forwardToVoiceMail
-                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName    
+                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName
                 sheet['q'+str(filadn)]=linept                       #routePartitionName
                 sheet['r'+str(filadn)]=row[182+delta]                #callForwardOnFailure.destination
                 sheet['s'+str(filadn)]="false"                      #callForwardOnFailure.forwardToVoiceMail
@@ -515,7 +515,7 @@ for row in csv_f:
                 sheet['cl'+str(filadn)]=fwdnocss                    # callForwardNoAnswerInt.callingSearchSpaceName
                 sheet['cn'+str(filadn)]="Standard Presence group"   #presenceGroupName
                 filadn=filadn+1
-            
+
             ##
             ## LINE #3
             ##
@@ -526,9 +526,9 @@ for row in csv_f:
                 ## DEBUG
                 print("PH#",fila,row[2]," ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164])
 
-                ###################################################### 
+                ######################################################
                 ## PHONE
-                ###################################################### 
+                ######################################################
                 sheet =  blk["PHONE"]
                 ############################################
                 ##
@@ -553,7 +553,7 @@ for row in csv_f:
                 sheet['hq'+str(fila)]="true"                    #lines.line.0.callInfoDisplay.callerName
                 sheet['hr'+str(fila)]="false"                   #lines.line.0.callInfoDisplay.callerNumber
                 sheet['hs'+str(fila)]=row[129+delta]            #lines.line.0.dirn.pattern
-            
+
                 ## CSS depende de la PT
                 #if row[130+delta] == "Interna-EM-PT": # Logica inversa
                 #    ## PT + CSS: EM+Phones sin EM
@@ -572,9 +572,9 @@ for row in csv_f:
                 #    fwdnocss=customerid+"-InternalOnly-CSS"
                 #    fwdallcss=customerid+"-InternalOnly-CSS"
 
-                sheet['ht'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName 
-                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)  
-                #####################  
+                sheet['ht'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName
+                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)
+                #####################
                 sheet['hu'+str(fila)]="Use System Policy"       #lines.line.0.mwlPolicy
                 sheet['hv'+str(fila)]="Use System Default"      #lines.line.0.ringSettingIdlePickupAlert
                 sheet['hw'+str(fila)]=row[166+delta]            #lines.line.0.busyTrigger
@@ -584,13 +584,13 @@ for row in csv_f:
                 ######################################################
                 ##
                 ## LINE: LINE #3
-                ##  
+                ##
                 ######################################################
                 ## DEBUG
                 print("LN#",filadn,"                 ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164+delta])
 
                 sheet = blk["LINE"]
-                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename
                 sheet['C'+str(filadn)]=action
                 #sheet['D'+str(filadn)]="name:"+row[3] # Search field
                 ######################################################
@@ -600,7 +600,7 @@ for row in csv_f:
                 sheet['m'+str(filadn)]=row[159+delta]                # CPG
                 sheet['n'+str(filadn)]=row[188+delta]                #callForwardNotRegisteredInt.destination
                 sheet['o'+str(filadn)]="false"                      #callForwardNotRegisteredInt.forwardToVoiceMail
-                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName    
+                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName
                 sheet['q'+str(filadn)]=linept                       #routePartitionName
                 sheet['r'+str(filadn)]=row[182+delta]                #callForwardOnFailure.destination
                 sheet['s'+str(filadn)]="false"                      #callForwardOnFailure.forwardToVoiceMail
@@ -666,7 +666,7 @@ for row in csv_f:
                 sheet['cl'+str(filadn)]=fwdnocss                    # callForwardNoAnswerInt.callingSearchSpaceName
                 sheet['cn'+str(filadn)]="Standard Presence group"   #presenceGroupName
                 filadn=filadn+1
-                
+
 
             ##
             ## LINE #4
@@ -678,9 +678,9 @@ for row in csv_f:
                 ## DEBUG
                 print("PH#",fila,row[2]," ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164])
 
-                ###################################################### 
+                ######################################################
                 ## PHONE
-                ###################################################### 
+                ######################################################
                 sheet =  blk["PHONE"]
                 ############################################
                 ##
@@ -705,7 +705,7 @@ for row in csv_f:
                 sheet['ir'+str(fila)]="true"                    #lines.line.0.callInfoDisplay.callerName
                 sheet['is'+str(fila)]="false"                   #lines.line.0.callInfoDisplay.callerNumber
                 sheet['it'+str(fila)]=row[129+delta]            #lines.line.0.dirn.pattern
-            
+
                 ## CSS depende de la PT
                 #if row[130+delta] == "Interna-EM-PT": # Logica inversa
                 #    ## PT + CSS: EM+Phones sin EM
@@ -724,9 +724,9 @@ for row in csv_f:
                 #    fwdnocss=customerid+"-InternalOnly-CSS"
                 #    fwdallcss=customerid+"-InternalOnly-CSS"
 
-                sheet['iu'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName 
-                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)  
-                #####################  
+                sheet['iu'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName
+                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)
+                #####################
                 sheet['iv'+str(fila)]="Use System Policy"       #lines.line.0.mwlPolicy
                 sheet['iw'+str(fila)]="Use System Default"      #lines.line.0.ringSettingIdlePickupAlert
                 sheet['ix'+str(fila)]=row[166+delta]            #lines.line.0.busyTrigger
@@ -736,13 +736,13 @@ for row in csv_f:
                 ######################################################
                 ##
                 ## LINE: LINE #4
-                ##  
+                ##
                 ######################################################
                 ## DEBUG
                 print("LN#",filadn,"                 ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164+delta])
 
                 sheet = blk["LINE"]
-                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename
                 sheet['C'+str(filadn)]=action
                 #sheet['D'+str(filadn)]="name:"+row[3] # Search field
                 ######################################################
@@ -752,7 +752,7 @@ for row in csv_f:
                 sheet['m'+str(filadn)]=row[159+delta]                # CPG
                 sheet['n'+str(filadn)]=row[188+delta]                #callForwardNotRegisteredInt.destination
                 sheet['o'+str(filadn)]="false"                      #callForwardNotRegisteredInt.forwardToVoiceMail
-                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName    
+                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName
                 sheet['q'+str(filadn)]=linept                       #routePartitionName
                 sheet['r'+str(filadn)]=row[182+delta]                #callForwardOnFailure.destination
                 sheet['s'+str(filadn)]="false"                      #callForwardOnFailure.forwardToVoiceMail
@@ -818,7 +818,7 @@ for row in csv_f:
                 sheet['cl'+str(filadn)]=fwdnocss                    # callForwardNoAnswerInt.callingSearchSpaceName
                 sheet['cn'+str(filadn)]="Standard Presence group"   #presenceGroupName
                 filadn=filadn+1
-                
+
 
             ##
             ## LINE #5
@@ -830,9 +830,9 @@ for row in csv_f:
                 ## DEBUG
                 print("PH#",fila,row[2]," ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164])
 
-                ###################################################### 
+                ######################################################
                 ## PHONE
-                ###################################################### 
+                ######################################################
                 sheet =  blk["PHONE"]
                 ############################################
                 ##
@@ -857,7 +857,7 @@ for row in csv_f:
                 sheet['js'+str(fila)]="true"                    #lines.line.0.callInfoDisplay.callerName
                 sheet['jt'+str(fila)]="false"                   #lines.line.0.callInfoDisplay.callerNumber
                 sheet['ju'+str(fila)]=row[129+delta]            #lines.line.0.dirn.pattern
-            
+
                 ## CSS depende de la PT
                 #if row[130+delta] == "Interna-EM-PT": # Logica inversa
                 #    ## PT + CSS: EM+Phones sin EM
@@ -876,9 +876,9 @@ for row in csv_f:
                 #    fwdnocss=customerid+"-InternalOnly-CSS"
                 #    fwdallcss=customerid+"-InternalOnly-CSS"
 
-                sheet['jv'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName 
-                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)  
-                #####################  
+                sheet['jv'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName
+                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)
+                #####################
                 sheet['jw'+str(fila)]="Use System Policy"       #lines.line.0.mwlPolicy
                 sheet['jx'+str(fila)]="Use System Default"      #lines.line.0.ringSettingIdlePickupAlert
                 sheet['jy'+str(fila)]=row[166+delta]            #lines.line.0.busyTrigger
@@ -888,13 +888,13 @@ for row in csv_f:
                 ######################################################
                 ##
                 ## LINE: LINE #5
-                ##  
+                ##
                 ######################################################
                 ## DEBUG
                 print("LN#",filadn,"                 ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164+delta])
 
                 sheet = blk["LINE"]
-                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename
                 sheet['C'+str(filadn)]=action
                 #sheet['D'+str(filadn)]="name:"+row[3] # Search field
                 ######################################################
@@ -904,7 +904,7 @@ for row in csv_f:
                 sheet['m'+str(filadn)]=row[159+delta]                # CPG
                 sheet['n'+str(filadn)]=row[188+delta]                #callForwardNotRegisteredInt.destination
                 sheet['o'+str(filadn)]="false"                      #callForwardNotRegisteredInt.forwardToVoiceMail
-                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName    
+                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName
                 sheet['q'+str(filadn)]=linept                       #routePartitionName
                 sheet['r'+str(filadn)]=row[182+delta]                #callForwardOnFailure.destination
                 sheet['s'+str(filadn)]="false"                      #callForwardOnFailure.forwardToVoiceMail
@@ -970,7 +970,7 @@ for row in csv_f:
                 sheet['cl'+str(filadn)]=fwdnocss                    # callForwardNoAnswerInt.callingSearchSpaceName
                 sheet['cn'+str(filadn)]="Standard Presence group"   #presenceGroupName
                 filadn=filadn+1
-                
+
 
             ##
             ## LINE #6
@@ -982,9 +982,9 @@ for row in csv_f:
                 ## DEBUG
                 print("PH#",fila,row[2]," ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164])
 
-                ###################################################### 
+                ######################################################
                 ## PHONE
-                ###################################################### 
+                ######################################################
                 sheet =  blk["PHONE"]
                 ############################################
                 ##
@@ -1009,7 +1009,7 @@ for row in csv_f:
                 sheet['kt'+str(fila)]="true"                    #lines.line.0.callInfoDisplay.callerName
                 sheet['ku'+str(fila)]="false"                   #lines.line.0.callInfoDisplay.callerNumber
                 sheet['kv'+str(fila)]=row[129+delta]            #lines.line.0.dirn.pattern
-            
+
                 ## CSS depende de la PT
                 #if row[130+delta] == "Interna-EM-PT": # Logica inversa
                 #    ## PT + CSS: EM+Phones sin EM
@@ -1028,9 +1028,9 @@ for row in csv_f:
                 #    fwdnocss=customerid+"-InternalOnly-CSS"
                 #    fwdallcss=customerid+"-InternalOnly-CSS"
 
-                sheet['kw'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName 
-                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)  
-                #####################  
+                sheet['kw'+str(fila)]=linept                    #lines.line.0.dirn.routePartitionName
+                #sheet['n'+str(fila)]=devicecss                  #callingSearchSpaceName (DEVICE CSS)
+                #####################
                 sheet['kx'+str(fila)]="Use System Policy"       #lines.line.0.mwlPolicy
                 sheet['ky'+str(fila)]="Use System Default"      #lines.line.0.ringSettingIdlePickupAlert
                 sheet['kz'+str(fila)]=row[166+delta]            #lines.line.0.busyTrigger
@@ -1040,13 +1040,13 @@ for row in csv_f:
                 ######################################################
                 ##
                 ## LINE: LINE #6
-                ##  
+                ##
                 ######################################################
                 ## DEBUG
                 print("LN#",filadn,"                 ##L",dn,"##: ",row[129+delta],"FMO-EPNM:",data['e164'][0]['cc'],data['e164'][0]['ac'],row[164+delta])
 
                 sheet = blk["LINE"]
-                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename 
+                sheet['B'+str(filadn)]=hierarchynode+"."+fmositename
                 sheet['C'+str(filadn)]=action
                 #sheet['D'+str(filadn)]="name:"+row[3] # Search field
                 ######################################################
@@ -1056,7 +1056,7 @@ for row in csv_f:
                 sheet['m'+str(filadn)]=row[159+delta]                # CPG
                 sheet['n'+str(filadn)]=row[188+delta]                #callForwardNotRegisteredInt.destination
                 sheet['o'+str(filadn)]="false"                      #callForwardNotRegisteredInt.forwardToVoiceMail
-                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName    
+                sheet['p'+str(filadn)]=fwdnocss                     #callForwardNotRegisteredInt.callingSearchSpaceName
                 sheet['q'+str(filadn)]=linept                       #routePartitionName
                 sheet['r'+str(filadn)]=row[182+delta]                #callForwardOnFailure.destination
                 sheet['s'+str(filadn)]="false"                      #callForwardOnFailure.forwardToVoiceMail

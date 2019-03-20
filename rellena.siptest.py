@@ -16,7 +16,7 @@ if len(sys.argv) != 6:
     exit(1)
 else:
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]  
+    fmositedata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     logconfigfile=sys.argv[5]   ## LOG config file
@@ -36,7 +36,7 @@ cl=clusterpath[14:16]       ## CL = dos digitos, 01, 02, 03,...
 
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -45,7 +45,7 @@ with open(fmostaticdata, "r") as fp:
                 #print("<<<<   ",fmoenvconfig[key])
 fp.close()
 
-# CMO datos del site 
+# CMO datos del site
 data = {}
 #data['dp'] = []
 #data['loc']=[]
@@ -61,26 +61,26 @@ data = {}
 #agencia={}
 
 with open(fmositedata,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 #FMO working path:
 sitepath="../FMO/"+siteslc
 
 # FILES
-templateblkfile = "../code/blk/90.siptest-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/90.siptest-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/90.siptest."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA
-hierarchynode=fmoenvconfig['hierarchynode'] 
-customerid=fmoenvconfig['fmocustomerid'] 
+hierarchynode=fmoenvconfig['hierarchynode']
+customerid=fmoenvconfig['fmocustomerid']
 aargroup=fmoenvconfig['fmoaargroup']
 fmoserviceurl=fmoenvconfig['fmoservice1url']
 fmoservicename=fmoenvconfig['fmoservice1name']
 ##
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']  
-cmg=data['fmosite'][0]['cmg']  
+fmositeid=data['fmosite'][0]['id']
+cmg=data['fmosite'][0]['cmg']
 
 ## FMO UserData
 cucdmsite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)
@@ -110,10 +110,10 @@ print("(II) SIPP::",devicename,"(",devicenumber,") :: Ejecutar test para Area Co
 
 
 sheet =  blk["QAS"]
-sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+sheet['B'+str(fila)]=hierarchynode+"."+fmositename
 sheet['C'+str(fila)]="add"
 #sheet['D'+str(fila)]="name:"+row[3] # Search field
-###################################################### 
+######################################################
 sheet['i'+str(fila)]=devicenumber                               # firsname
 sheet['j'+str(fila)]=devicenumber                               # lastname
 sheet['k'+str(fila)]=devicenumber                               # username
@@ -126,7 +126,7 @@ sheet['q'+str(fila)]="ProdubanSIPPTest"                         # qagroup_name
 #sheet['r'+str(fila)]=""                                        # Entitlement profile
 sheet['s'+str(fila)]="true"                                     # voice
 #sheet['t'+str(fila)]=""                                        # phone_type
-sheet['u'+str(fila)]=devicename                                 # phones.0.phone_name 
+sheet['u'+str(fila)]=devicename                                 # phones.0.phone_name
 sheet['v'+str(fila)]="false"                                    # mobility
 sheet['w'+str(fila)]="false"                                    # voicemail
 sheet['x'+str(fila)]="false"                                    # snr
@@ -136,21 +136,21 @@ sheet['aa'+str(fila)]="false"                                   # jabber
 sheet['ak'+str(fila)]=data['e164'][0]['head']                                          # e164
 
 sheet =  blk["PHONE.3rdparty"]
-sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+sheet['B'+str(fila)]=hierarchynode+"."+fmositename
 sheet['C'+str(fila)]="modify"
 sheet['D'+str(fila)]="name:"+devicename                         # Search field
-###################################################### 
+######################################################
 sheet['Z'+str(fila)]=devicename                                 # name
 sheet['BT'+str(fila)]=devicenumber                              # digest
 
 ## FMO File OUTPUT DATA: Close
 blk.save(outputblkfile)
 
-###################################################### 
-###################################################### 
-###################################################### 
-###################################################### 
-templateblkfile = "../code/blk/90.delete-siptest-template.xlsx" 
+######################################################
+######################################################
+######################################################
+######################################################
+templateblkfile = "blk/90.delete-siptest-template.xlsx"
 outputblkfile = sitepath+"/90.delete-siptest."+siteslc+".xlsx"
 
 blk = openpyxl.load_workbook(templateblkfile)
@@ -158,26 +158,26 @@ blk = openpyxl.load_workbook(templateblkfile)
 print("(II) Remove::",devicename,"(",devicenumber,")" ,file=f)
 
 sheet =  blk["PHONE.RM"]
-sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+sheet['B'+str(fila)]=hierarchynode+"."+fmositename
 sheet['C'+str(fila)]="delete"
 sheet['D'+str(fila)]="name:"+devicename                         # Search field
-###################################################### 
+######################################################
 sheet['Z'+str(fila)]=devicename                                 # name
 
 sheet =  blk["LINE.RM"]
-sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+sheet['B'+str(fila)]=hierarchynode+"."+fmositename
 sheet['C'+str(fila)]="delete"
 sheet['D'+str(fila)]="pattern:"+devicenumber+",routePartitionName:"+linept                         # Search field
-###################################################### 
+######################################################
 sheet['Z'+str(fila)]=devicenumber                                # name
 sheet['Q'+str(fila)]=linept                                      # Partition
 
 
 sheet =  blk["SUB.RM"]
-sheet['B'+str(fila)]=hierarchynode+"."+fmositename 
+sheet['B'+str(fila)]=hierarchynode+"."+fmositename
 sheet['C'+str(fila)]="delete"
 sheet['D'+str(fila)]="userid:"+devicenumber                         # Search field
-###################################################### 
+######################################################
 sheet['GN'+str(fila)]=devicenumber                                 # name
 
 ## FMO File OUTPUT DATA: Close

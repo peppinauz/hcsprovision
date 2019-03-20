@@ -71,7 +71,7 @@ sitepath="../FMO/"+siteslc
 #inputfile = clusterpath+"/directorynumber.csv"  ## ORIGINAL
 inputfile = clusterpath+"/deviceprofile.csv"
 
-templateblkfile = "../code/blk/04.devprof-template.xlsx" # SIN DATAINPUT
+templateblkfile = "blk/04.devprof-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/05.devprof."+siteslc+".xlsx"
 
 ## FMO CUSTOMER INPUT DATA
@@ -214,7 +214,8 @@ for row in csv_f:
             sheet['v'+str(fila)]=row['Description']                         # Description
             sheet['w'+str(fila)]="false"                                    # traceFlag
             sheet['x'+str(fila)]="false"                                    # ignorePresentationIndicators
-            sheet['y'+str(fila)]=row['Device User Locale']                  # userLocale
+            ##sheet['y'+str(fila)]=row['Device User Locale']                  # userLocale
+            sheet['y'+str(fila)]="Portuguese Brazil"                        # userLocale
             sheet['z'+str(fila)]="Default"                                  # joinAcrossLines
             ####################
             #sheet['aa'+str(fila)]="Device Profile"                         # speeddials

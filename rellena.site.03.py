@@ -17,7 +17,7 @@ if len(sys.argv) != 6:
     exit(1)
 else:
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]  
+    fmositedata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     logconfigfile=sys.argv[5]   ## LOG config file
@@ -37,7 +37,7 @@ print("(II) GENERANDO SITE BLK de FMO", file=f)
 
 # FMO datos de entorno:
 fmoenvconfig={}
-with open(fmostaticdata, "r") as fp:         
+with open(fmostaticdata, "r") as fp:
         for line in fp.readlines():
             li = line.lstrip()
             if not li.startswith("#") and '=' in li:
@@ -46,7 +46,7 @@ with open(fmostaticdata, "r") as fp:
                 #print("<<<<   ",fmoenvconfig[key])
 fp.close()
 
-# CMO datos del site 
+# CMO datos del site
 data = {}
 #data['dp'] = []
 #data['loc']=[]
@@ -62,7 +62,7 @@ data = {}
 #agencia={}
 
 with open(fmositedata,'r') as infile:
-    data = json.load(infile) 
+    data = json.load(infile)
 infile.close()
 
 
@@ -70,7 +70,7 @@ infile.close()
 e164=data['e164'][0]['head']
 fmotrunkipaddr=data['gw'][0]['trunk']
 fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']  
+fmositeid=data['fmosite'][0]['id']
 cmg=data['fmosite'][0]['cmg']
 
 #FMO working path:
@@ -100,8 +100,8 @@ fmotrunkincomingcss=fmosite+"-LBI-CSS"
 fmotrunkname=siteslc+"-trunk"
 
 ## FICHEROS
-dpinputfile =clusterpath+"/devicepool.csv"              ## BBDD CMO 
-templateblkfile = "../code/blk/01.site-template.xlsx"   ## FMO SITE TEMPLATE
+dpinputfile =clusterpath+"/devicepool.csv"              ## BBDD CMO
+templateblkfile = "blk/01.site-template.xlsx"   ## FMO SITE TEMPLATE
 outputblkfile = sitepath+"/01.site."+siteslc+".xlsx"    ## FMO BLK OUTPUT
 
 # CMO File INPUT DATA
@@ -135,11 +135,11 @@ print("(II): Configurando SITE", file=f)
 
 for dp in data['dp']:
     #print("(II) \n",dp,"\n(II)", file=f)
-    if dp['devicepool'] == cmodevicepool: 
+    if dp['devicepool'] == cmodevicepool:
         #################### DP.SITE ####################
         sheet = blk["DP.SITE"]
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(sitaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(sitaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(sitaddfila)]="add"
         #sheet['D'+str(fila)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -163,7 +163,7 @@ for dp in data['dp']:
             #################### RECURSOS ####################
             sheet = blk["MTP.ADD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(mtpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(mtpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(mtpaddfila)]="add"
             #sheet['D'+str(mtpaddfila)]="name:"+row[3] # Search field
             ## datos dinamicos
@@ -174,22 +174,22 @@ for dp in data['dp']:
             #################### RECURSOS ####################
             sheet = blk["MTP.MOD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(mtpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(mtpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(mtpaddfila)]="modify"
             sheet['D'+str(mtpaddfila)]="name:"+rsc['nombre'] # Search field
             ## datos dinamicos
             sheet['I'+str(mtpaddfila)]=rsc['nombre']                                       # name
             sheet['j'+str(mtpaddfila)]="false"                               # callingLineIdPresentation
             sheet['l'+str(mtpaddfila)]=rsc['tipo']                                       # mtptype
-            sheet['m'+str(mtpaddfila)]=devicepool  
+            sheet['m'+str(mtpaddfila)]=devicepool
             mtpaddfila=mtpaddfila+1
-            
+
         for rsc in data['cnf']:
             #print(rsc,"---  ")
             #################### RECURSOS ####################
             sheet = blk["CONF.ADD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(cnfaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(cnfaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(cnfaddfila)]="add"
             #sheet['D'+str(cnfaddfila)]="name:"+row[3] # Search field
             ## datos dinamicos
@@ -204,7 +204,7 @@ for dp in data['dp']:
             #################### RECURSOS ####################
             sheet = blk["CONF.MOD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(cnfaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(cnfaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(cnfaddfila)]="modify"
             sheet['D'+str(cnfaddfila)]="name:"+rsc['nombre']                     # Search field
             ## datos dinamicos
@@ -217,13 +217,13 @@ for dp in data['dp']:
             sheet['v'+str(cnfaddfila)]=devicepool                                # devicePoolName
             sheet['y'+str(cnfaddfila)]=rsc['nombre']                                        # name
             cnfaddfila=cnfaddfila+1
-            
+
         for rsc in data['trans']:
             #print(rsc,"---  ")
             #################### RECURSOS ####################
             sheet = blk["XCODE.ADD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(xcdaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(xcdaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(xcdaddfila)]="add"
             #sheet['D'+str(fila)]="name:"+row[3] # Search field
             ## datos dinamicos
@@ -235,7 +235,7 @@ for dp in data['dp']:
             #################### RECURSOS ####################
             sheet = blk["XCODE.ADD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(xcdaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(xcdaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(xcdaddfila)]="add"
             #sheet['D'+str(fila)]="name:"+row[3] # Search field
             ## datos dinamicos
@@ -246,7 +246,7 @@ for dp in data['dp']:
             sheet['n'+str(xcdaddfila)]="false"                               # isTrustedRelayPoint
             xcdaddfila=xcdaddfila+1
 
-        
+
         sumarsc=len(data['cnf'])+len(data['mtp'])+len(data['trans'])
         ## DEBUG
         #print("CNF >>>",len(data['cnf']),">>> ",cnfaddfila)
@@ -255,14 +255,14 @@ for dp in data['dp']:
         #print("RSC >>>",sumarsc)
         #print(len(data['mrg']),data['mrg'],data['mrg'][0],data['mrg'][1])
         sumarsc=len(data['cnf'])+len(data['mtp'])+len(data['trans'])
-        
+
         if sumarsc > 6: ## Maximos numero de recursos
             print("(WW): Maximo numero de recursos alcanzados solo configurarn 6",file=f)
 
         if len(data['mrg']) > 0:
             sheet = blk["MRG.ADD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(mrgaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(mrgaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(mrgaddfila)]="add"
             #sheet['D'+str(fila)]="name:"+row[3] # Search field
             ## datos dinamicos
@@ -282,7 +282,7 @@ for dp in data['dp']:
 
         sheet = blk["MRGL.ADD"]
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(mrgaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(mrgaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(mrgaddfila)]="add"
         #sheet['D'+str(fila)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -298,7 +298,7 @@ for dp in data['dp']:
             ## SITE con GATEWAY configuramos el TRUNK
             print("(II) SITE con GW configuramos el GW",file=f)
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(trkaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(trkaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(trkaddfila)]="add"
             sheet['G'+str(trkaddfila)]=fmoenvconfig['fmondl'] # $ndl
             #sheet['D'+str(trkaddfila)]="name:"+row[3] # Search field
@@ -310,11 +310,11 @@ for dp in data['dp']:
             sheet['n'+str(trkaddfila)]=fmotrunkincomingcss # callingSearchSpaceName
             sheet['o'+str(trkaddfila)]="Default" # useTrustedRelayPoint
             sheet['p'+str(trkaddfila)]="false" # enableQsigUtf8
-            sheet['q'+str(trkaddfila)]="None(Default)" # 
+            sheet['q'+str(trkaddfila)]="None(Default)" #
             sheet['r'+str(trkaddfila)]="false" # scriptTraceEnabled
             sheet['s'+str(trkaddfila)]="None" # tunneledProtocol
             sheet['t'+str(trkaddfila)]="When using both sRTP and TLS" # trunkTrafficSecure
-            sheet['v'+str(trkaddfila)]=fmotrunkname ##### TRUNK NAME 
+            sheet['v'+str(trkaddfila)]=fmotrunkname ##### TRUNK NAME
             sheet['w'+str(trkaddfila)]="true" # retryVideoCallAsAudio
             sheet['x'+str(trkaddfila)]="Default" # sipPrivacy
             sheet['y'+str(trkaddfila)]="No Changes" # qsigVariant
@@ -372,19 +372,19 @@ for dp in data['dp']:
 
             sheet = blk["TRUNK.MOD"]
             ## datos estaticos: Hierarchy, site,...
-            sheet['B'+str(trkaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+            sheet['B'+str(trkaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
             sheet['C'+str(trkaddfila)]="modify"
             sheet['G'+str(trkaddfila)]=fmoenvconfig['fmondl']                    # $ndl
             sheet['D'+str(trkaddfila)]="name:"+fmotrunkname      # Search field
             ## datos dinamicos
             sheet['I'+str(trkaddfila)]="SIP"                     # protocol
-            sheet['v'+str(trkaddfila)]=fmotrunkname              ##### TRUNK NAME 
+            sheet['v'+str(trkaddfila)]=fmotrunkname              ##### TRUNK NAME
             sheet['aq'+str(trkaddfila)]=fmosite+"-Location"      # LocationName
             sheet['as'+str(trkaddfila)]=fmosite+"-DevicePool"    # devicePoolName
-            
+
         sheet = blk["RG.ADD"]
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(rdaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(rdaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(rdaddfila)]="add"
         #sheet['D'+str(rdaddfila)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -401,12 +401,12 @@ for dp in data['dp']:
             sheet['l'+str(rdaddfila)]="fake-trunk"           # members.member.0.deviceName
         sheet['m'+str(rdaddfila)]="0"                        # members.member.0.port
         sheet['n'+str(rdaddfila)]=fmoenvconfig['fmocucmmanagementip']        # networkDevice.nd
- 
+
         sheet = blk["TP"]
         ## Patron #1: Modificamos el patron intrasite [^50]XXX
         ## datos estaticos: Hierarchy, site,...
-        #sheet['a'+str(tpaddfila)]="#"        
-        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        #sheet['a'+str(tpaddfila)]="#"
+        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(tpaddfila)]="modify"
         sheet['D'+str(tpaddfila)]="routePartitionName:"+aintpt+","+"pattern:[^50]XXX"   # Search field
         ## datos dinamicos
@@ -415,12 +415,12 @@ for dp in data['dp']:
         sheet['y'+str(tpaddfila)]="XX CL2 type 2 Intrasite Routing AInt-PT"             # Description
         tpaddfila=tpaddfila+1
 
-        sheet['a'+str(tpaddfila)]="##LBI"        
+        sheet['a'+str(tpaddfila)]="##LBI"
         tpaddfila=tpaddfila+1
 
         ## TP: LBI
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(tpaddfila)]="add"
         #sheet['D'+str(tpaddfila)]="name:"+row[3]                                       # Search field
         ## datos dinamicos
@@ -457,7 +457,7 @@ for dp in data['dp']:
         tpaddfila=tpaddfila+1
 
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(tpaddfila)]="add"
         #sheet['D'+str(tpaddfila)]="name:"+row[3]                                       # Search field
         ## datos dinamicos
@@ -494,7 +494,7 @@ for dp in data['dp']:
         tpaddfila=tpaddfila+1
 
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(tpaddfila)]="add"
         #sheet['D'+str(tpaddfila)]="name:"+row[3]                                       # Search field
         ## datos dinamicos
@@ -534,7 +534,7 @@ for dp in data['dp']:
 
         sheet = blk["SRST.ADD"]
         ## datos estaticos: Hierarchy, site,...
-        sheet['B'+str(srstaddfil)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(srstaddfil)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(srstaddfil)]="add"
         #sheet['D'+str(srstaddfil)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -543,7 +543,7 @@ for dp in data['dp']:
         sheet['k'+str(srstaddfil)]=data['srst'][0]['ipsccp']             # SipNetwork
         sheet['l'+str(srstaddfil)]=data['srst'][0]['ipsccp']             # ipAddress
         sheet['m'+str(srstaddfil)]="2000"                     # port
-        sheet['n'+str(srstaddfil)]="5060"                     # sipPort 
+        sheet['n'+str(srstaddfil)]="5060"                     # sipPort
 
         #######################################################
         ## Buscamos el location del DP
@@ -552,12 +552,12 @@ for dp in data['dp']:
             n=n+1
             #print(">>>",data['loc'][n]['audio'])
             #print(">>>",data['loc'][n]['video'])
-            
+
         #print(">>>",n,">>>",dp['location'],">>> >>>",data['loc'][n]['location'])
-        
+
         sheet = blk["LOCATION.MOD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(addlocfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(addlocfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(addlocfila)]="modify"
         sheet['D'+str(addlocfila)]="name:"+fmosite+"-Location"           # Search field
         ## datos dinamicos
@@ -575,7 +575,7 @@ for dp in data['dp']:
 
         sheet = blk["REGION.MOD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(addregfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(addregfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(addregfila)]="modify"
         sheet['D'+str(addregfila)]="name:"+fmosite+"-Region"               # Search field
         ## datos dinamicos
@@ -602,7 +602,7 @@ for dp in data['dp']:
 
         sheet = blk["DP.MOD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(adddpfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(adddpfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(adddpfila)]="modify"
         sheet['D'+str(addlocfila)]="name:"+fmosite+"-DevicePool" # Search field
         ## datos dinamicos
@@ -650,11 +650,11 @@ for dp in data['dp']:
         sheet['cc'+str(adddpfila)]="SLRG-Serv"                          # localRouteGroup.0.name
         sheet['cd'+str(adddpfila)]="routegroup-"+siteslc                          #
         sheet['ce'+str(adddpfila)]="Standard Local Route Group"         # localRouteGroup.0.name
-        sheet['cf'+str(adddpfila)]="routegroup-"+siteslc 
-            
+        sheet['cf'+str(adddpfila)]="routegroup-"+siteslc
+
         sheet = blk["SITE.DEF"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(sitaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(sitaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(sitaddfila)]="modify"
         sheet['D'+str(sitaddfila)]="name:"+fmositename # Search field
         ## datos dinamicos
@@ -698,7 +698,7 @@ for dp in data['dp']:
         #################### LOCATION.ADD ####################
         sheet = blk["LOCATION.ADD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(addlocfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(addlocfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(addlocfila)]="add"
         #sheet['D'+str(addlocfila)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -714,11 +714,11 @@ for dp in data['dp']:
         sheet['R'+str(addlocfila)]="0"                                    # betweenLocations.betweenLocation.0.weight
         sheet['S'+str(addlocfila)]="0"                                    # betweenLocations.betweenLocation.0.audioBandwidth
         addlocfila=addlocfila+1
-            
+
         #################### REGION.ADD ####################
         sheet = blk["REGION.ADD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(addregfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(addregfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(addregfila)]="add"
         #sheet['D'+str(addregfila)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -747,7 +747,7 @@ for dp in data['dp']:
         #################### DP.ADD ####################
         sheet = blk["DP.ADD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
-        sheet['B'+str(adddpfila)]=fmoenvconfig['hierarchynode']+"."+fmositename 
+        sheet['B'+str(adddpfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(adddpfila)]="add"
         #sheet['D'+str(addlocfila)]="name:"+row[3] # Search field
         ## datos dinamicos
@@ -795,7 +795,7 @@ for dp in data['dp']:
         sheet['cc'+str(adddpfila)]="SLRG-Serv"                          # localRouteGroup.0.name
         sheet['cd'+str(adddpfila)]="routegroup-"+siteslc                          #
         sheet['ce'+str(adddpfila)]="Standard Local Route Group"         # localRouteGroup.0.name
-        sheet['cf'+str(adddpfila)]="routegroup-"+siteslc 
+        sheet['cf'+str(adddpfila)]="routegroup-"+siteslc
         adddpfila=adddpfila+1
 
         # Next row
