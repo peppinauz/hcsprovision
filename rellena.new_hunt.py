@@ -412,6 +412,7 @@ with open(tmpcsvblkfile,'w') as outcsv:
         row['forwardHuntNoAnswer.callingSearchSpaceName']=fwdhuntcss
         row['forwardHuntBusy.destination']=rhg['cfwdbusy']
         row['forwardHuntBusy.callingSearchSpaceName']=fwdhuntcss
+        row['useCallingPartyPhoneMask']="Off"
         ##
         ## HUNT LIST
         row['HuntList.name']=rhg['huntListName']['name']
