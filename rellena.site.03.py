@@ -94,6 +94,10 @@ location=fmosite+"-Location"
 devicecss=fmosite+"-BRADP-DBRDevice-CSS"
 aintpt=fmosite+"-AInt-PT"
 lbipt=fmosite+"-LBI-PT"
+localpt=fmosite+"-BRADP-Local-PT"
+ilscss=fmoenvconfig['fmocustomerid']+"-ILS-CSS"
+tbsdddnacional="00[1-9][1-9].11[2-57]XXXXXXX"
+tbsdddmobile="00[1-9][1-9].119XXXXXXXX"
 preisrcss=fmoenvconfig['fmocustomerid']+"-PreISR-CSS"
 #fmotrunkincomingcss=fmoenvconfig['fmocustomerid']+"-IngressFromCBO-CSS"
 fmotrunkincomingcss=fmosite+"-LBI-CSS"
@@ -531,6 +535,70 @@ for dp in data['dp']:
         sheet['am'+str(tpaddfila)]="Default"                                            # callingLinePresentationBit
         tpaddfila=tpaddfila+1
 
+        #### TBP (AC distinto 11)
+        ## datos estaticos: Hierarchy, site,...
+        if data['e164'][0]['ac'] != '11':
+            sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
+            sheet['C'+str(tpaddfila)]="add"
+            #sheet['D'+str(tpaddfila)]="name:"+row[3]                                       # Search field
+            ## datos dinamicos
+            sheet['I'+str(tpaddfila)]="Cisco CallManager"                                   # callingPartyNumberingPlan
+            sheet['j'+str(tpaddfila)]="Default"                                             # connectedLinePresentationBit
+            sheet['k'+str(tpaddfila)]=localpt                                                 # routePartitionName
+            sheet['l'+str(tpaddfila)]="No Error"                                            # releaseClause
+            sheet['m'+str(tpaddfila)]="false"                                               # blockEnable
+            sheet['n'+str(tpaddfila)]="Cisco CallManager"                                   # callingPartyNumberType
+            sheet['o'+str(tpaddfila)]="false"                                               # provideOutsideDialtone
+            sheet['q'+str(tpaddfila)]=tbsdddnacional                     # pattern
+            sheet['r'+str(tpaddfila)]="Default"                                             # patternPrecedence
+            sheet['s'+str(tpaddfila)]=ilscss                                             # callingSearchSpaceName
+            sheet['t'+str(tpaddfila)]="+55"                                                    # prefixDigitsOut
+            sheet['u'+str(tpaddfila)]="Translation"                                         # usage
+            sheet['v'+str(tpaddfila)]="Cisco CallManager"                                   # calledPartyNumberingPlan
+            sheet['w'+str(tpaddfila)]="true"                                                # dontWaitForIDTOnSubsequentHops
+            sheet['x'+str(tpaddfila)]="Default"                                             # connectedNamePresentationBit
+            sheet['y'+str(tpaddfila)]="*** TBP *** DDD National (auto)"                                    # Description
+            sheet['z'+str(tpaddfila)]="Default"                                             # routeClass
+            sheet['aa'+str(tpaddfila)]="Default"                                            # callingNamePresentationBit
+            sheet['ac'+str(tpaddfila)]="false"                                              # routeNextHopByCgpn
+            sheet['ad'+str(tpaddfila)]="false"                                              # useOriginatorCss
+            sheet['ae'+str(tpaddfila)]="PreDot"                                             # digitDiscardInstructionName
+            sheet['ag'+str(tpaddfila)]="Off"                                                # useCallingPartyPhoneMask
+            sheet['aj'+str(tpaddfila)]="Cisco CallManager"                                  # calledPartyNumberType
+            sheet['al'+str(tpaddfila)]="false"                                              # patternUrgency
+            sheet['am'+str(tpaddfila)]="Default"                                            # callingLinePresentationBit
+            tpaddfila=tpaddfila+1
+
+            sheet['B'+str(tpaddfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
+            sheet['C'+str(tpaddfila)]="add"
+            #sheet['D'+str(tpaddfila)]="name:"+row[3]                                       # Search field
+            ## datos dinamicos
+            sheet['I'+str(tpaddfila)]="Cisco CallManager"                                   # callingPartyNumberingPlan
+            sheet['j'+str(tpaddfila)]="Default"                                             # connectedLinePresentationBit
+            sheet['k'+str(tpaddfila)]=localpt                                                 # routePartitionName
+            sheet['l'+str(tpaddfila)]="No Error"                                            # releaseClause
+            sheet['m'+str(tpaddfila)]="false"                                               # blockEnable
+            sheet['n'+str(tpaddfila)]="Cisco CallManager"                                   # callingPartyNumberType
+            sheet['o'+str(tpaddfila)]="false"                                               # provideOutsideDialtone
+            sheet['q'+str(tpaddfila)]=tbsdddmobile                     # pattern
+            sheet['r'+str(tpaddfila)]="Default"                                             # patternPrecedence
+            sheet['s'+str(tpaddfila)]=ilscss                                             # callingSearchSpaceName
+            sheet['t'+str(tpaddfila)]="+55"                                                    # prefixDigitsOut
+            sheet['u'+str(tpaddfila)]="Translation"                                         # usage
+            sheet['v'+str(tpaddfila)]="Cisco CallManager"                                   # calledPartyNumberingPlan
+            sheet['w'+str(tpaddfila)]="true"                                                # dontWaitForIDTOnSubsequentHops
+            sheet['x'+str(tpaddfila)]="Default"                                             # connectedNamePresentationBit
+            sheet['y'+str(tpaddfila)]="*** TBP *** DDD Mobile (auto)"                                    # Description
+            sheet['z'+str(tpaddfila)]="Default"                                             # routeClass
+            sheet['aa'+str(tpaddfila)]="Default"                                            # callingNamePresentationBit
+            sheet['ac'+str(tpaddfila)]="false"                                              # routeNextHopByCgpn
+            sheet['ad'+str(tpaddfila)]="false"                                              # useOriginatorCss
+            sheet['ae'+str(tpaddfila)]="PreDot"                                             # digitDiscardInstructionName
+            sheet['ag'+str(tpaddfila)]="Off"                                                # useCallingPartyPhoneMask
+            sheet['aj'+str(tpaddfila)]="Cisco CallManager"                                  # calledPartyNumberType
+            sheet['al'+str(tpaddfila)]="false"                                              # patternUrgency
+            sheet['am'+str(tpaddfila)]="Default"                                            # callingLinePresentationBit
+            tpaddfila=tpaddfila+1
 
         sheet = blk["SRST.ADD"]
         ## datos estaticos: Hierarchy, site,...

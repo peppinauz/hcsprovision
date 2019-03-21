@@ -89,6 +89,7 @@ cmg=data['fmosite'][0]['cmg']
 cmodevicepool=siteslc+"-DP"
 cmolocation=siteslc+"-LOC"
 cmoslc="5"+siteslc
+fmomrgl="mrgl"+cmoslc
 
 ## FMO UserData
 cucdmsite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)
@@ -229,6 +230,7 @@ for row in csv_f:
             sheet['aw'+str(fila)]=location.replace(cmolocation,cucdmsite+"-Location")
             sheet['ay'+str(fila)]=devicepool.replace(cmodevicepool,cucdmsite+"-DevicePool")                #devicepool
             ####################
+            sheet['ax'+str(fila)]=fmomrgl                   #mediaResourceListName
             sheet['az'+str(fila)]="false"                   #isDualMode
             ####################
             sheet['ca'+str(fila)]="webAccess"                   #vendorConfig.13.key   ## V.11
