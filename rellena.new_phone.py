@@ -89,7 +89,7 @@ cmg=data['fmosite'][0]['cmg']
 cmodevicepool=siteslc+"-DP"
 cmolocation=siteslc+"-LOC"
 cmoslc="5"+siteslc
-fmomrgl="mrgl"+cmoslc
+fmomrgl="mrgl-"+siteslc
 
 ## FMO UserData
 cucdmsite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)

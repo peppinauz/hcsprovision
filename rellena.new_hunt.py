@@ -418,7 +418,7 @@ with open(tmpcsvblkfile,'w') as outcsv:
         row['HuntList.name']=rhg['huntListName']['name']
         row['HuntList.description']=rhg['huntListName']['description']
         row['HuntList.callManagerGroupName']=rhg['huntListName']['callManagerGroupName']
-        ##row['HuntList.routeListEnabled']=""
+        row['HuntList.routeListEnabled']="true"
         row['HuntList.voiceMailUsage']="false"
 
         ## LINEGROUP
