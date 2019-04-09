@@ -417,6 +417,7 @@ for dp in data['dp']:
         sheet['q'+str(tpaddfila)]=data['e164'][0]['patternintra']                       # pattern
         sheet['t'+str(tpaddfila)]="5"+data['e164'][0]['slc']                            # prefixDigitsOut
         sheet['y'+str(tpaddfila)]="XX CL2 type 2 Intrasite Routing AInt-PT"             # Description
+        sheet['al'+str(tpaddfila)]="true"             # patternUrgency        
         tpaddfila=tpaddfila+1
 
         sheet['a'+str(tpaddfila)]="##LBI"
