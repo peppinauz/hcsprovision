@@ -67,7 +67,7 @@ infile.close()
 #data['rsc'] = []
 e164=data['e164']
 agencia=data['fmosite']
-uniorg=data['uniorg']
+uniorg=agencia[0]['uniorg']
 devices=data['devices']
 ndevices=devices[0]['phones']
 
