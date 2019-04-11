@@ -16,7 +16,7 @@ if len(sys.argv) != 5:
     print(">>>>  [1] <cmo site data>")
     print(">>>>  [2] cluster path:  ../CMO/ClusterXX")
     print(">>>>  [3] XXXX: SLC")
-    print(">>>>  [4] config log file: ../FMO/XXXX/logconfigfilename-.txt") 
+    print(">>>>  [4] config log file: ../FMO/XXXX/logconfigfilename-.txt")
     exit(1)
 else:
     outconfigfile=sys.argv[1]   ## CMO configuration
@@ -57,11 +57,11 @@ def busca_digito(fila,intra1,intra2,max):
     #print("**",row['Directory Number 1'],row['Directory Number 2'],row['Directory Number 3'],row['Directory Number 4'],row['Directory Number 5'],row['Directory Number 6'])
     #
     # PRIMER dígito
-    #  
+    #
     if row['Directory Number 1'][5:6] not in intra1:
         intra1=intra1+row['Directory Number 1'][5:6]
         #print(">> ",intra1)
-    
+
     if max >= 2:
         if row['Directory Number 2'][5:6] not in intra1:
             intra1=intra1+row['Directory Number 2'][5:6]
@@ -89,7 +89,7 @@ def busca_digito(fila,intra1,intra2,max):
 
     #
     # SEGUNDO dígito
-    #  
+    #
     if row['Directory Number 1'][6:7] not in intra2 :
         intra2=intra2+row['Directory Number 1'][6:7]
         #print(">> ",intra1)
@@ -260,23 +260,23 @@ for row in csv_f:
             for i in row:
                 if 'CFB' in i:
                     #print("CFB::",i)
-                    data['mrg'].append(i) 
+                    data['mrg'].append(i)
                 if 'MTP' in i:
                     #print("CFB::",i)
-                    data['mrg'].append(i) 
+                    data['mrg'].append(i)
                 if 'TRANS' in i:
                     #print("CFB::",i)
-                    data['mrg'].append(i) 
+                    data['mrg'].append(i)
 
 #                if i.startswith(slc) and i.endswith('CFB'): ## Y termina con CFB
-#                    print("CFB",i) 
-#                    data['mrg'].append(i)  
+#                    print("CFB",i)
+#                    data['mrg'].append(i)
 #                if i.startswith(slc) and i.find('MTP'): ## Y termina con MTP
-#                    print("MTP",i) 
-#                    data['mrg'].append(i) 
+#                    print("MTP",i)
+#                    data['mrg'].append(i)
 #                if i.startswith(slc) and i.find('TRANS'): ## Y termina con TRANS
-#                    print("TXC",i) 
-#                    data['mrg'].append(i) 
+#                    print("TXC",i)
+#                    data['mrg'].append(i)
 fin.close()
 
 print("(II) Media Resource Group: ",data['mrg'],"(",len(data['mrg']),")", file=f)
@@ -473,9 +473,10 @@ for row in sheet.rows:
         areacode=row[13].value[1:3]
         nacional=row[13].value[5:]
         ramais=row[5].value
+        uniorg=row[0].value
         ##
         epnm="+55"+areacode+nacional
-        print("(II) SLC encontrado: \t\t",rslc, file=f)    
+        print("(II) SLC encontrado: \t\t",rslc, file=f)
         print("(II) SITE NAME: \t\t",sitename, file=f)
         print("(II) CABECERA: \t\t",row[13].value, file=f)
         print("(II) AREA CODE: \t\t",areacode, file=f)
@@ -500,12 +501,12 @@ if sitename == "" or areacode == "" or epnm == "" or ramais == "":
 data['devices'].append({'phones':phonecount,'udp':devprofcount,'ramais':ramais})
 data['e164'].append({'epnm':"",'head':epnm,'slc':slc,'ac':areacode,'cc':"+55",'intrasite1':intraext1,'intrasite2':intraext2,'patternintra':intraspattern,'phonedn':phonedn,'emdn':emdn})
 ## FMOSITE
-data['fmosite'].append({'name':sitename,'id':"",'cmg':""})
+data['fmosite'].append({'name':sitename,'id':"",'cmg':"",'uniorg':uniorg})
 data['sipptest'].append({'extension':str(siptestext)})
 
 
 with open(outconfigfile,'w') as outfile:
-    json.dump(data,outfile) 
+    json.dump(data,outfile)
 outfile.close()
 
 ## LOG de CONFIGURACION
