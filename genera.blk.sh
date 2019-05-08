@@ -388,13 +388,28 @@ $PYTHON rellena.siptest.py $entorno $cmosite $slc $workdirectory $configlogfile
 ##
 ## MIGRACIONES
 ## Ficheros
-echo "(II) Generando informacion para la migración"
+echo "(II) Generando informacion para la migración::PHONES"
 $PYTHON migracion.phone.py $entorno $cmosite $slc $workdirectory $configlogfile
 ## Envio de ficheros a Campinas:
-echo "(II) Copiando ficheros para la migración"
+echo "(II) Copiando ficheros para la migración::PHONES"
 echo ".....$slcdir/*reset*.csv"
 
 $SCP $slcdir/*reset*.csv delivery@vhcsubsaotb2:/home/delivery/source/inputfiles/
+
+#############################################################################################
+#############################################################################################
+#############################################################################################
+##
+## MIGRACIONES
+## Ficheros
+echo "(II) Generando informacion para la migración::GATEWAY"
+$PYTHON migracion.gateway.py $entorno $cmosite $slc $workdirectory $configlogfile
+## Envio de ficheros a Campinas:
+echo "(II) Copiando ficheros para la migración::GATEWAY"
+echo ".....$base/FMO/dataInfo.csv"
+
+#$SCP $base/FMO/dataInfo.csv gw@vhcsubsaotb2:/home/gw/inventario/
+
 
 exit 0
 
