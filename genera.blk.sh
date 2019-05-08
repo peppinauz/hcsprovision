@@ -35,6 +35,7 @@ then
   RM=/bin/rm
   CAT=/bin/cat
   SED=/usr/bin/sed
+  SCP=/usr/bin/scp
 else
   ## MIO
   AWK=/usr/bin/awk
@@ -45,6 +46,7 @@ else
   RM=/bin/rm
   CAT=/bin/cat
   SED=/usr/bin/sed
+  SCP=/usr/bin/scp
 fi
 
 ## Variables
