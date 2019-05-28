@@ -66,10 +66,9 @@ infile.close()
 
 #INPUT: E164
 e164=data['e164'][0]['head']
-fmotrunkipaddr=data['gw'][0]['trunk']
-fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']
-cmg=data['fmosite'][0]['cmg']
+fmositename=data['fmosite']['name']
+fmositeid=data['fmosite']['id']
+cmg=data['fmosite']['cmg']
 
 #FMO working path:
 sitepath="../FMO/"+siteslc
@@ -82,8 +81,8 @@ outputblkfile = sitepath+"/02.cpg."+siteslc+".xlsx"
 ## FMO CUSTOMER INPUT DATA
 hierarchynode=fmoenvconfig['hierarchynode']
 customerid=fmoenvconfig['fmocustomerid']
-fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']
+fmositename=data['fmosite']['name']
+fmositeid=data['fmosite']['id']
 cucdmsite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)
 preisrpt=customerid+"-PreISR-PT"
 preisrcss=customerid+"-PreISR-CSS"

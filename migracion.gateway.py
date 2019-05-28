@@ -69,7 +69,7 @@ ingateway.close()
 csvgateway = open(sitepath+"/dataInfo.csv", 'a')
 
 ## FMO CUSTOMER INPUT DATA
-cmg=data['fmosite'][0]['cmg']
+cmg=data['fmosite']['cmg']
 ipsip=data['srst'][0]['ipsccp']
 areacode=data['e164'][0]['ac']
 

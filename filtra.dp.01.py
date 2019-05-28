@@ -4,11 +4,11 @@
 
 
 import csv
-import openpyxl
 import time
 import sys
 import json
 
+from modules import siteinfoadmin
 
 
 if len(sys.argv) != 5:
@@ -37,7 +37,7 @@ data['trans'] = []
 data['e164'] = []
 data['agencia'] = []
 data['devices'] = []
-data['fmosite'] = []
+data['fmosite'] = {}
 data['huntpilot']=[]
 data['cpgnumber']=[]
 data['sipptest']=[]
@@ -383,6 +383,8 @@ fin = open(dproffile,"r")
 csv_f = csv.DictReader(fin)
 devprofcount=0
 emdn=0
+cmositeinfo={}
+cmonums={}
 
 #print("(II) ",csv_f.fieldnames,file=f)
 header=csv_f.fieldnames
@@ -454,55 +456,29 @@ print("(II) SIPPTEST extension:",str(siptestext), file=f)
 
 fin.close()
 
+cmositeinfo,cmonums=siteinfoadmin.get_cmositedata(slc,f)
 
-####################### E164 -- Mask
-# CMO File INPUT DATA
-#cmositedata = "../CMO/AGENCIAS CISCO - MIGRAÇÃO HCS.xlsx"
-cmositedata = "../CMO/AGENCIAS-CISCO_HCS.xlsx"
-blk = openpyxl.load_workbook(cmositedata,read_only=True)
-sheet = blk["Plan1"]
-
-for row in sheet.rows:
-    #print("<<>>",row[0].value)
-    #DEBUG
-    #print(sheet.cell(row=fila,column=col).value)
-    rslc=str(row[0].value)
-    if rslc[1:].startswith(slc):
-        ## AREACODE + CABECERA
-        sitename=slc+"-"+row[1].value
-        areacode=row[13].value[1:3]
-        nacional=row[13].value[5:]
-        ramais=row[5].value
-        uniorg=row[0].value
-        ##
-        epnm="+55"+areacode+nacional
-        print("(II) SLC encontrado: \t\t",rslc, file=f)
-        print("(II) SITE NAME: \t\t",sitename, file=f)
-        print("(II) CABECERA: \t\t",row[13].value, file=f)
-        print("(II) AREA CODE: \t\t",areacode, file=f)
-        print("(II) CABECERA +E164: \t",epnm, file=f)
-        print("(II) RAMAIS : \t\t\t",ramais, file=f)
-        print("(II) PHONE COUNT: \t\t",phonecount, file=f)
-        print("(II) Dev Prof COUNT: \t\t",devprofcount, file=f)
-#    else:
-#        ## CONDICION de ERROR
-#        ##
-#        print("(EE): NO EXISTE el SITE ",slc," en el fichero de datos",cmositedata)
-
-if sitename == "" or areacode == "" or epnm == "" or ramais == "":
+## Verificamos si hemos encontrado datos en el EXCEL
+if not len(cmositeinfo) or not len(cmonums):
     print("(EE): NO EXISTE el SITE ",slc," en el fichero de datos",cmositedata, file=f)
     print("(EE): Es necesario actualizar el fichero ",cmositedata, file=f)
     print("(EE): Y volver a ejecutar el comando ", file=f)
 
-#blk.save(cmositedata)  ## blk = openpyxl.load_workbook(cmositedata,read_only=True) -> Read_only switch
 
-## DEBUG
-#print(">>>>> ",phonecount,devprofcount)
-data['devices'].append({'phones':phonecount,'udp':devprofcount,'ramais':ramais})
-data['e164'].append({'epnm':"",'head':epnm,'slc':slc,'ac':areacode,'cc':"+55",'intrasite1':intraext1,'intrasite2':intraext2,'patternintra':intraspattern,'phonedn':phonedn,'emdn':emdn})
-## FMOSITE
-data['fmosite'].append({'name':sitename,'id':"",'cmg':"",'uniorg':uniorg})
+## Recopilando datos para sacar al fichero JSON:
+## INFO del SITE: (Origen Excel)
+data['fmosite']=cmositeinfo
+
+## INFO para SIPP
 data['sipptest'].append({'extension':str(siptestext)})
+
+## INFO de numeracion (Origen Excel) + (Origen BBDD)
+data['devices'].append({'phones':phonecount,'udp':devprofcount,'ramais':cmositeinfo['ramais']})
+data['e164'].append({'epnm':cmonums['epnm'],'head':cmonums['head'],'slc':slc,'ac':cmonums['ac'],'cc':cmonums['cc'],'intrasite1':intraext1,'intrasite2':intraext2,'patternintra':intraspattern,'phonedn':phonedn,'emdn':emdn})
+
+print("FILTRA.DP.01@MAIN -----------------------------", file=f)
+print(json.dumps(data,sort_keys=True,indent=2), file=f)
+print("FILTRA.DP.01@MAIN -----------------------------", file=f)
 
 
 with open(outconfigfile,'w') as outfile:

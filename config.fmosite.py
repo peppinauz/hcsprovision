@@ -67,7 +67,6 @@ infile.close()
 #data['rsc'] = []
 e164=data['e164']
 agencia=data['fmosite']
-uniorg=agencia[0]['uniorg']
 devices=data['devices']
 ndevices=devices[0]['phones']
 
@@ -111,9 +110,9 @@ fp.close()
 
 ################################################################
 
-fmonagencia=agencia[0]['name']
+fmonagencia=agencia['name']
 cabecera=e164[0]['head']
-nagencia=agencia[0]['name'][5:]
+nagencia=agencia['name'][5:]
 nnum=cabecera
 nac=e164[0]['ac']
 areacode=e164[0]['ac']
@@ -125,7 +124,7 @@ running=True
 
 print("\n\n")
 print("Se va a hacer la provisión para SLC :: \t\t",slc)
-print("En CMO se ha encontrado el nombre de agencia :: \t",agencia[0]['name'])
+print("En CMO se ha encontrado el nombre de agencia :: \t",agencia['name'])
 print("\n")
 print("En FMO el nuevo site se llamará :: \t\t\t",fmonagencia)
 print("\nEn CMO se ha encontrado External Phone Number Mask :: \t",e164[0]['epnm'])
@@ -227,10 +226,11 @@ sheet['C'+str(fila)]="add"
 sheet['N'+str(fila)]="true"                             # hcsSite.isModifiable
 sheet['p'+str(fila)]="CustomerLocation"                 # hcsSite.type
 sheet['t'+str(fila)]="false"                            #hcsSite.isDefaultLocation
-sheet['u'+str(fila)]=uniorg                        #hcsSite.shortName
-sheet['v'+str(fila)]=uniorg                        #hcsSite.shortName
-sheet['w'+str(fila)]=fmonagencia                        #hcsSite.shortName
-#sheet['y'+str(fila)]="false"                            #hcsSite.isDeletable
+sheet['i'+str(fila)]=data['fmosite']['uniorg']          #hcsSite.ExternalID
+sheet['u'+str(fila)]="PROVISIONADA"                     #hcsSite.Description
+sheet['v'+str(fila)]=data['fmosite']['Address1']        #hcsSite.sho
+sheet['w'+str(fila)]=fmonagencia                        #hcsSite.ExtendedName
+#sheet['y'+str(fila)]="false"                           #hcsSite.isDeletable
 sheet['z'+str(fila)]=fmoenvconfig['hcsSitecustomer']    #hcsSite.customer
 sheet['aa'+str(fila)]=fmoenvconfig['fmonetworklocale']  #hcsSite.country
 sheet['ae'+str(fila)]=fmoenvconfig['ndlr']              #ndlr
@@ -258,19 +258,17 @@ fmoidagencia=input("(II) Inserta el ID de la agencia? ")  ## Temporal
 ################################################################
 ## Guardamos datos FMO
 ## SITE
-data['fmosite'][0]['name']=fmonagencia
-data['fmosite'][0]['id']=fmoidagencia
-data['fmosite'][0]['cmg']=fmocmg
+data['fmosite']['name']=fmonagencia
+data['fmosite']['id']=fmoidagencia
+data['fmosite']['cmg']=fmocmg
 ## E164
 data['e164'][0]['head']=cabecera
 data['e164'][0]['ac']=areacode
 
 ## DEBUG
-print("(II) Data DUMP:: INICIO", file=f)
-print("(II) ", file=f)
-print(data, file=f)
-print("(II) Data DUMP:: FIN", file=f)
-print("(II) ", file=f)
+print("CONFIG.FMOSITE@MAIN -----------------------------", file=f)
+print(json.dumps(data,sort_keys=True,indent=2), file=f)
+print("CONFIG.FMOSITE@MAIN -----------------------------", file=f)
 
 with open(siteconfig,'w') as outfile:
     json.dump(data,outfile)

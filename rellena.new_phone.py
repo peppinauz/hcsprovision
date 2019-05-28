@@ -81,9 +81,9 @@ aargroup=fmoenvconfig['fmoaargroup']
 fmoserviceurl=fmoenvconfig['fmoservice0url']
 fmoservicename=fmoenvconfig['fmoservice0name']
 ##
-fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']
-cmg=data['fmosite'][0]['cmg']
+fmositename=data['fmosite']['name']
+fmositeid=data['fmosite']['id']
+cmg=data['fmosite']['cmg']
 
 # CMO patterns
 cmodevicepool=siteslc+"-DP"

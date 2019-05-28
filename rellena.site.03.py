@@ -69,9 +69,9 @@ infile.close()
 #INPUT: E164
 e164=data['e164'][0]['head']
 fmotrunkipaddr=data['gw'][0]['trunk']
-fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']
-cmg=data['fmosite'][0]['cmg']
+fmositename=data['fmosite']['name']
+fmositeid=data['fmosite']['id']
+cmg=data['fmosite']['cmg']
 
 #FMO working path:
 sitepath="../FMO/"+siteslc
@@ -417,7 +417,7 @@ for dp in data['dp']:
         sheet['q'+str(tpaddfila)]=data['e164'][0]['patternintra']                       # pattern
         sheet['t'+str(tpaddfila)]="5"+data['e164'][0]['slc']                            # prefixDigitsOut
         sheet['y'+str(tpaddfila)]="XX CL2 type 2 Intrasite Routing AInt-PT"             # Description
-        sheet['al'+str(tpaddfila)]="true"             # patternUrgency        
+        sheet['al'+str(tpaddfila)]="true"             # patternUrgency
         tpaddfila=tpaddfila+1
 
         sheet['a'+str(tpaddfila)]="##LBI"

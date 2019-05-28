@@ -68,8 +68,8 @@ print("entorno,clusterid,sub1,sub2,ip-phone-model,ip-phone-name,ip-phone-user,ip
 print("entorno,clusterid,sub1,sub2,ip-phone-model,ip-phone-name,ip-phone-user,ip-phone-pass,ip-phone-web-access-enable,ip-phone-ssh-user,ip-phone-ssh-pass,deviceprofile,userid,ipaddress,registered", file=fmoresetphone)
 
 ## FMO CUSTOMER INPUT DATA
-fmositeid=data['fmosite'][0]['id']
-cmg=data['fmosite'][0]['cmg']
+fmositeid=data['fmosite']['id']
+cmg=data['fmosite']['cmg']
 
 # CMO patterns
 cmodevicepool=siteslc+"-DP"

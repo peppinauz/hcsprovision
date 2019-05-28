@@ -78,9 +78,9 @@ aargroup=fmoenvconfig['fmoaargroup']
 fmoserviceurl=fmoenvconfig['fmoservice1url']
 fmoservicename=fmoenvconfig['fmoservice1name']
 ##
-fmositename=data['fmosite'][0]['name']
-fmositeid=data['fmosite'][0]['id']
-cmg=data['fmosite'][0]['cmg']
+fmositename=data['fmosite']['name']
+fmositeid=data['fmosite']['id']
+cmg=data['fmosite']['cmg']
 
 ## FMO UserData
 cucdmsite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)
