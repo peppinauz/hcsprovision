@@ -52,18 +52,22 @@ def get_cmositedata(slc,logfile):
 
     ## Definicion de datos:
     siteinfo={}
-    sitenum={}
+
+    print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
+    print("(II) Searching 1",slc, file=logfile)
+    print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
 
     for row in sheet.rows:
         #print("<<>>",row[0].value)
         #DEBUG
         #print(sheet.cell(row=fila,column=col).value)
+        #rslc="1"+str(row[0].value)
         rslc=str(row[0].value)
         if rslc[1:].startswith(slc):
             ## EXTRAEMOS INFO DEL SITE
             siteinfo['name']=slc+"-"+row[NOME_POS].value
             siteinfo['uniorg']=str(row[COD_POS].value)
-            print(row[COD_POS].value,str(row[COD_POS].value),siteinfo['uniorg'])
+            #print(row[COD_POS].value,str(row[COD_POS].value),siteinfo['uniorg'])
             siteinfo['juntores']=row[JUNTORES_POS].value
             siteinfo['ramais']=row[RAMAIS_POS].value
             siteinfo['regional']=row[REGIONAL_POS].value
@@ -76,17 +80,15 @@ def get_cmositedata(slc,logfile):
             siteinfo['Address1']=generate_si_siteadmin(siteinfo)
 
             ## EXTRAEMOS INFO de NUMERACION
-            sitenum['cc']=BRAZIL_CC
-            sitenum['ac']=row[PHONE_POS].value[1:3]
-            sitenum['head']=row[PHONE_POS].value[5:]
-            sitenum['slc']=slc
+            siteinfo['cc']=BRAZIL_CC
+            siteinfo['ac']=row[PHONE_POS].value[1:3]
+            siteinfo['head']=row[PHONE_POS].value[5:]
+            siteinfo['slc']=slc
             ## External Phone Number Mask: Country Code + Area Code + Numeracion nacional
-            sitenum['epnm']=BRAZIL_CC+row[PHONE_POS].value[1:3]+row[PHONE_POS].value[5:]
+            siteinfo['epnm']=BRAZIL_CC+row[PHONE_POS].value[1:3]+row[PHONE_POS].value[5:]
 
             print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
             print(json.dumps(siteinfo,sort_keys=True,indent=2), file=logfile)
             print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
-            print(json.dumps(sitenum,sort_keys=True,indent=2), file=logfile)
-            print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
 
-    return siteinfo,sitenum
+    return siteinfo

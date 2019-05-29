@@ -6,8 +6,8 @@ entorno="doc/fmo-static-data.cfg"   ## Produccion
 #entorno="doc/agencias-cl2.cfg"   ## agencias-cl2
 #entorno="doc/agencias-clx.cfg"   ## agencias-clx
 ## CONFIG SO
-#linux=0 # Desarrollo
-linux=1 # Produccion
+linux=0 # Desarrollo
+#linux=1 # Produccion
 
 ## Chequeamos en todos los clusters
 base=".."

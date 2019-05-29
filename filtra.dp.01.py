@@ -456,11 +456,11 @@ print("(II) SIPPTEST extension:",str(siptestext), file=f)
 
 fin.close()
 
-cmositeinfo,cmonums=siteinfoadmin.get_cmositedata(slc,f)
+cmositeinfo=siteinfoadmin.get_cmositedata(slc,f)
 
 ## Verificamos si hemos encontrado datos en el EXCEL
 if not len(cmositeinfo) or not len(cmonums):
-    print("(EE): NO EXISTE el SITE ",slc," en el fichero de datos",cmositedata, file=f)
+    print("(EE): NO EXISTE el SITE ",slc," en el fichero de datos",cmositeinfo, file=f)
     print("(EE): Es necesario actualizar el fichero ",cmositedata, file=f)
     print("(EE): Y volver a ejecutar el comando ", file=f)
 
@@ -474,7 +474,7 @@ data['sipptest'].append({'extension':str(siptestext)})
 
 ## INFO de numeracion (Origen Excel) + (Origen BBDD)
 data['devices'].append({'phones':phonecount,'udp':devprofcount,'ramais':cmositeinfo['ramais']})
-data['e164'].append({'epnm':cmonums['epnm'],'head':cmonums['head'],'slc':slc,'ac':cmonums['ac'],'cc':cmonums['cc'],'intrasite1':intraext1,'intrasite2':intraext2,'patternintra':intraspattern,'phonedn':phonedn,'emdn':emdn})
+data['e164'].append({'epnm':cmositeinfo['epnm'],'head':cmositeinfo['head'],'slc':slc,'ac':cmositeinfo['ac'],'cc':cmositeinfo['cc'],'intrasite1':intraext1,'intrasite2':intraext2,'patternintra':intraspattern,'phonedn':phonedn,'emdn':emdn})
 
 print("FILTRA.DP.01@MAIN -----------------------------", file=f)
 print(json.dumps(data,sort_keys=True,indent=2), file=f)
