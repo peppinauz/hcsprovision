@@ -8,6 +8,7 @@ import openpyxl
 import time
 import sys
 import json
+from modules import voss_macros
 
 #INPUTS: SLC
 siteslc="0000"
@@ -17,7 +18,7 @@ if len(sys.argv) != 6:
     exit(1)
 else:
     fmostaticdata=sys.argv[1]
-    fmositedata=sys.argv[2]
+    voss_macros.CUXSIYdata=sys.argv[2]
     siteslc=str(sys.argv[3])   #INPUTS: SLC
     clusterpath=sys.argv[4]    #SLC Cluster path
     logconfigfile=sys.argv[5]   ## LOG config file
@@ -61,7 +62,7 @@ data = {}
 #e164={}
 #agencia={}
 
-with open(fmositedata,'r') as infile:
+with open(voss_macros.CUXSIYdata,'r') as infile:
     data = json.load(infile)
 infile.close()
 
@@ -70,7 +71,8 @@ infile.close()
 e164=data['e164'][0]['head']
 fmotrunkipaddr=data['gw'][0]['trunk']
 fmositename=data['fmosite']['name']
-fmositeid=data['fmosite']['id']
+#voss_macros.CUXSIYid=data['voss_macros.CUXSIY']['id']
+voss_macros.CUXSIYid=voss_macros.SITE_NUM_ID
 cmg=data['fmosite']['cmg']
 
 #FMO working path:
@@ -84,23 +86,23 @@ gwdomain=""
 gwnametmp=""
 
 ##### FMO SITE INPUT DATA: Built-in
-fmosite=fmoenvconfig['fmocustomerid']+"Si"+str(fmositeid)
-cssfwd=fmoenvconfig['fmocustomerid']+"-DirNum-CSS"
-linept=fmoenvconfig['fmocustomerid']+"-DirNum-PT"
-linecss=fmosite+"-DBRSTDNatl24HrsCLIPyFONnFACnCMC-CSS"
-aarcss=fmoenvconfig['fmocustomerid']+"-AAR-CSS"
-devicepool=fmosite+"-DevicePool"
-location=fmosite+"-Location"
-devicecss=fmosite+"-BRADP-DBRDevice-CSS"
-aintpt=fmosite+"-AInt-PT"
-lbipt=fmosite+"-LBI-PT"
-localpt=fmosite+"-BRADP-Local-PT"
-ilscss=fmoenvconfig['fmocustomerid']+"-ILS-CSS"
+fmosite=voss_macros.CUXSIY
+cssfwd=voss_macros.CUX+"-DirNum-CSS"
+linept=voss_macros.CUX+"-DirNum-PT"
+linecss=voss_macros.CUXSIY+"-DBRSTDNatl24HrsCLIPyFONnFACnCMC-CSS"
+aarcss=voss_macros.CUX+"-AAR-CSS"
+devicepool=voss_macros.CUXSIY+"-DevicePool"
+location=voss_macros.CUXSIY+"-Location"
+devicecss=voss_macros.CUXSIY+"-BRADP-DBRDevice-CSS"
+aintpt=voss_macros.CUXSIY+"-AInt-PT"
+lbipt=voss_macros.CUXSIY+"-LBI-PT"
+localpt=voss_macros.CUXSIY+"-BRADP-Local-PT"
+ilscss=voss_macros.CUX+"-ILS-CSS"
 tbsdddnacional="00[1-9][1-9].11[2-57]XXXXXXX"
 tbsdddmobile="00[1-9][1-9].119XXXXXXXX"
-preisrcss=fmoenvconfig['fmocustomerid']+"-PreISR-CSS"
-#fmotrunkincomingcss=fmoenvconfig['fmocustomerid']+"-IngressFromCBO-CSS"
-fmotrunkincomingcss=fmosite+"-LBI-CSS"
+preisrcss=voss_macros.CUX+"-PreISR-CSS"
+#fmotrunkincomingcss=voss_macros.CUX+"-IngressFromCBO-CSS"
+fmotrunkincomingcss=voss_macros.CUXSIY+"-LBI-CSS"
 fmotrunkname=siteslc+"-trunk"
 
 ## FICHEROS
@@ -156,7 +158,7 @@ for dp in data['dp']:
         sheet['p'+str(sitaddfila)]=data['e164'][0]['ac']               # areaCodeArray.0.areaCode
         sheet['q'+str(sitaddfila)]=8                      # areaCodeArray.0.locNumLen
         sheet['r'+str(sitaddfila)]="false"              # extPrefixReq
-        sheet['s'+str(sitaddfila)]=fmositeid              # siteId
+        sheet['s'+str(sitaddfila)]=voss_macros.SITE_NUM_ID              # siteId
         sheet['t'+str(sitaddfila)]="false"              # active
         sheet['U'+str(sitaddfila)]=data['e164'][0]['head']                   # pubNumber
         sheet['V'+str(sitaddfila)]="false"              # areaCodeInLocalDialing
@@ -383,8 +385,8 @@ for dp in data['dp']:
             ## datos dinamicos
             sheet['I'+str(trkaddfila)]="SIP"                     # protocol
             sheet['v'+str(trkaddfila)]=fmotrunkname              ##### TRUNK NAME
-            sheet['aq'+str(trkaddfila)]=fmosite+"-Location"      # LocationName
-            sheet['as'+str(trkaddfila)]=fmosite+"-DevicePool"    # devicePoolName
+            sheet['aq'+str(trkaddfila)]=voss_macros.CUXSIY+"-Location"      # LocationName
+            sheet['as'+str(trkaddfila)]=voss_macros.CUXSIY+"-DevicePool"    # devicePoolName
 
         sheet = blk["RG.ADD"]
         ## datos estaticos: Hierarchy, site,...
@@ -628,15 +630,15 @@ for dp in data['dp']:
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
         sheet['B'+str(addlocfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(addlocfila)]="modify"
-        sheet['D'+str(addlocfila)]="name:"+fmosite+"-Location"           # Search field
+        sheet['D'+str(addlocfila)]="name:"+voss_macros.CUXSIY+"-Location"           # Search field
         ## datos dinamicos
-        sheet['N'+str(addlocfila)]=fmosite+"-Location"                    # Name
+        sheet['N'+str(addlocfila)]=voss_macros.CUXSIY+"-Location"                    # Name
         sheet['I'+str(addlocfila)]="Hub_None"                             # betweenLocations.betweenLocation.0.locationName
         sheet['J'+str(addlocfila)]="-1"                                   # betweenLocations.betweenLocation.0.immersiveBandwidth
         sheet['K'+str(addlocfila)]=data['loc'][n]['video']                # betweenLocations.betweenLocation.0.videoBandwidth
         sheet['L'+str(addlocfila)]="50"                                   # betweenLocations.betweenLocation.0.weight
         sheet['M'+str(addlocfila)]=data['loc'][n]['audio']                # betweenLocations.betweenLocation.0.audioBandwidth
-        sheet['O'+str(addlocfila)]=fmosite+"-Location"                    # betweenLocations.betweenLocation.0.locationName
+        sheet['O'+str(addlocfila)]=voss_macros.CUXSIY+"-Location"                    # betweenLocations.betweenLocation.0.locationName
         sheet['P'+str(addlocfila)]="No Reservation"                       # betweenLocations.betweenLocation.0.immersiveBandwidth
         sheet['Q'+str(addlocfila)]="0"                                    # betweenLocations.betweenLocation.0.videoBandwidth
         sheet['R'+str(addlocfila)]="0"                                    # betweenLocations.betweenLocation.0.weight
@@ -646,15 +648,15 @@ for dp in data['dp']:
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
         sheet['B'+str(addregfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(addregfila)]="modify"
-        sheet['D'+str(addregfila)]="name:"+fmosite+"-Region"               # Search field
+        sheet['D'+str(addregfila)]="name:"+voss_macros.CUXSIY+"-Region"               # Search field
         ## datos dinamicos
-        sheet['I'+str(addregfila)]=fmosite+"-Region"                      # Name
+        sheet['I'+str(addregfila)]=voss_macros.CUXSIY+"-Region"                      # Name
         sheet['J'+str(addregfila)]="Use System Default"                   # relatedRegions.relatedRegion.0.lossyNetwork
         sheet['K'+str(addregfila)]="-1"                                   # relatedRegions.relatedRegion.0.immersiveVideoBandwidth
         sheet['L'+str(addregfila)]="64"                                    # relatedRegions.relatedRegion.0.bandwidth
         sheet['M'+str(addregfila)]="384"                                   # relatedRegions.relatedRegion.0.videoBandwidth
         sheet['N'+str(addregfila)]="Use System Default"                   # relatedRegions.relatedRegion.0.codecPreference
-        sheet['o'+str(addregfila)]=fmosite+"-Region"                      # relatedRegions.relatedRegion.0.regionName
+        sheet['o'+str(addregfila)]=voss_macros.CUXSIY+"-Region"                      # relatedRegions.relatedRegion.0.regionName
         sheet['p'+str(addregfila)]="Use System Default"                   # relatedRegions.relatedRegion.1.lossyNetwork
         sheet['q'+str(addregfila)]="-1"                                    # relatedRegions.relatedRegion.1.immersiveVideoBandwidth
         sheet['r'+str(addregfila)]="8"                                    # relatedRegions.relatedRegion.1.bandwidth
@@ -673,11 +675,11 @@ for dp in data['dp']:
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
         sheet['B'+str(adddpfila)]=fmoenvconfig['hierarchynode']+"."+fmositename
         sheet['C'+str(adddpfila)]="modify"
-        sheet['D'+str(addlocfila)]="name:"+fmosite+"-DevicePool" # Search field
+        sheet['D'+str(addlocfila)]="name:"+voss_macros.CUXSIY+"-DevicePool" # Search field
         ## datos dinamicos
-        sheet['at'+str(adddpfila)]=fmosite+"-DevicePool"                  # regionName
-        sheet['q'+str(adddpfila)]=fmosite+"-Region"                       # regionName
-        sheet['az'+str(adddpfila)]=fmosite+"-Location"                    # regionName
+        sheet['at'+str(adddpfila)]=voss_macros.CUXSIY+"-DevicePool"                  # regionName
+        sheet['q'+str(adddpfila)]=voss_macros.CUXSIY+"-Region"                       # regionName
+        sheet['az'+str(adddpfila)]=voss_macros.CUXSIY+"-Location"                    # regionName
         sheet['s'+str(adddpfila)]=cmg                                     # CMGName
         #sheet['t'+str(adddpfila)]="Default"                               # calledPartyUnknownPrefix
         #sheet['u'+str(adddpfila)]="Default"                               # singleButtonBarge
@@ -727,8 +729,8 @@ for dp in data['dp']:
         sheet['C'+str(sitaddfila)]="modify"
         sheet['D'+str(sitaddfila)]="name:"+fmositename # Search field
         ## datos dinamicos
-        sheet['y'+str(sitaddfila)]=fmosite+"-Location"     # defaultLOC
-        sheet['ag'+str(sitaddfila)]=fmosite+"-DevicePool"  # defaultDP
+        sheet['y'+str(sitaddfila)]=voss_macros.CUXSIY+"-Location"     # defaultLOC
+        sheet['ag'+str(sitaddfila)]=voss_macros.CUXSIY+"-DevicePool"  # defaultDP
         sheet['aw'+str(sitaddfila)]=fmositename            # name
         sheet['ba'+str(sitaddfila)]=cmg                    # defaultcucmgroup
 
@@ -763,7 +765,7 @@ for dp in data['dp']:
 
         #print(">>>",n,">>>",dp['location'],">>> >>>",data['loc'][n]['location'])
 
-        #print(dp['devicepool'].replace(cmodevicepool,fmosite))
+        #print(dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY))
         #################### LOCATION.ADD ####################
         sheet = blk["LOCATION.ADD"]
         ## datos estaticos (SIN DATAINPUT) Hierarchy, site,...
@@ -771,13 +773,13 @@ for dp in data['dp']:
         sheet['C'+str(addlocfila)]="add"
         #sheet['D'+str(addlocfila)]="name:"+row[3] # Search field
         ## datos dinamicos
-        sheet['N'+str(addlocfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-Location")  # Name
+        sheet['N'+str(addlocfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-Location")  # Name
         sheet['I'+str(addlocfila)]="Hub_None"                            # betweenLocations.betweenLocation.0.locationName
         sheet['J'+str(addlocfila)]="-1"                                   # betweenLocations.betweenLocation.0.immersiveBandwidth
         sheet['K'+str(addlocfila)]=data['loc'][n]['video']                # betweenLocations.betweenLocation.0.videoBandwidth
         sheet['L'+str(addlocfila)]="50"                                   # betweenLocations.betweenLocation.0.weight
         sheet['M'+str(addlocfila)]=data['loc'][n]['audio']                # betweenLocations.betweenLocation.0.audioBandwidth
-        sheet['O'+str(addlocfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-Location")  # betweenLocations.betweenLocation.0.locationName
+        sheet['O'+str(addlocfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-Location")  # betweenLocations.betweenLocation.0.locationName
         sheet['P'+str(addlocfila)]="No Reservation"                       # betweenLocations.betweenLocation.0.immersiveBandwidth
         sheet['Q'+str(addlocfila)]="0"                                    # betweenLocations.betweenLocation.0.videoBandwidth
         sheet['R'+str(addlocfila)]="0"                                    # betweenLocations.betweenLocation.0.weight
@@ -791,13 +793,13 @@ for dp in data['dp']:
         sheet['C'+str(addregfila)]="add"
         #sheet['D'+str(addregfila)]="name:"+row[3] # Search field
         ## datos dinamicos
-        sheet['I'+str(addregfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-Region")  # Name
+        sheet['I'+str(addregfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-Region")  # Name
         sheet['J'+str(addregfila)]="Use System Default"                   # relatedRegions.relatedRegion.0.lossyNetwork
         sheet['K'+str(addregfila)]="-1"                                   # relatedRegions.relatedRegion.0.immersiveVideoBandwidth
         sheet['L'+str(addregfila)]="8"                                    # relatedRegions.relatedRegion.0.bandwidth
         sheet['M'+str(addregfila)]="-1"                                   # relatedRegions.relatedRegion.0.videoBandwidth
         sheet['N'+str(addregfila)]="Use System Default"                   # relatedRegions.relatedRegion.0.codecPreference
-        sheet['o'+str(addregfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-Region")  # relatedRegions.relatedRegion.0.regionName
+        sheet['o'+str(addregfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-Region")  # relatedRegions.relatedRegion.0.regionName
         sheet['p'+str(addregfila)]="Use System Default"                   # relatedRegions.relatedRegion.1.lossyNetwork
         sheet['q'+str(addregfila)]="-1"                                    # relatedRegions.relatedRegion.1.immersiveVideoBandwidth
         sheet['r'+str(addregfila)]="8"                                    # relatedRegions.relatedRegion.1.bandwidth
@@ -820,9 +822,9 @@ for dp in data['dp']:
         sheet['C'+str(adddpfila)]="add"
         #sheet['D'+str(addlocfila)]="name:"+row[3] # Search field
         ## datos dinamicos
-        sheet['at'+str(adddpfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-DevicePool")  # devicePool Name
-        sheet['q'+str(adddpfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-Region")  # regionName
-        sheet['az'+str(adddpfila)]=dp['devicepool'].replace(cmodevicepool,fmosite+"-Location")  # regionName
+        sheet['at'+str(adddpfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-DevicePool")  # devicePool Name
+        sheet['q'+str(adddpfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-Region")  # regionName
+        sheet['az'+str(adddpfila)]=dp['devicepool'].replace(cmodevicepool,voss_macros.CUXSIY+"-Location")  # regionName
         sheet['s'+str(adddpfila)]=cmg                                    # CMGName
         sheet['t'+str(adddpfila)]="Default"                              # calledPartyUnknownPrefix
         sheet['u'+str(adddpfila)]="Default"                              # singleButtonBarge

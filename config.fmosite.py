@@ -8,6 +8,9 @@ import time
 import sys
 import json
 
+from modules import voss_macros
+from modules import customer_config
+
 if len(sys.argv) != 5:
     print("ERROR: python3 <nombre-fichero.py> <datos de entorno> <cmo site data> XXXX <log-config-file>")
     print(">>>>  Datos de entorno: ",sys.argv[1])
@@ -110,7 +113,6 @@ fp.close()
 
 ################################################################
 
-fmonagencia=agencia['name']
 cabecera=e164[0]['head']
 nagencia=agencia['name'][5:]
 nnum=cabecera
@@ -126,7 +128,7 @@ print("\n\n")
 print("Se va a hacer la provisión para SLC :: \t\t",slc)
 print("En CMO se ha encontrado el nombre de agencia :: \t",agencia['name'])
 print("\n")
-print("En FMO el nuevo site se llamará :: \t\t\t",fmonagencia)
+print("En FMO el nuevo site se llamará :: \t\t\t",agencia['name'])
 print("\nEn CMO se ha encontrado External Phone Number Mask :: \t",e164[0]['epnm'])
 print("En FMO se va a configurar número de cabecera :: \t",cabecera)
 ################################################################
@@ -146,8 +148,8 @@ if xcambio == 'S':
             cinput=input("\t Quieres continuar? (S/n)")
             if cinput == 'S':
                 nagencia=scambio
-                fmonagencia=slc+"-"+scambio
-                print(">>>> Datos cambiados:",fmonagencia)
+                agencia['name']=slc+"-"+scambio
+                print(">>>> Datos cambiados:",agencia['name'])
             else:
                 print(">>>> Descartando cambios")
 
@@ -175,7 +177,7 @@ if xcambio == 'S':
         print("Se va a hacer la provisión para SLC >>> \t\t",slc)
         print("Este es el nombre que se ha asignado a la agencia >>> \t",nagencia)
         #print("\n")
-        print("En FMO el nuevo site se llamará >>> \t\t\t",fmonagencia)
+        print("En FMO el nuevo site se llamará >>> \t\t\t",agencia['name'])
         print("\nEn CMO se ha encontrado External Phone Number Mask >>> \t",e164[0]['epnm'])
         print("Este es el número de cabecera >>> \t\t\t",cabecera)
         print("\n")
@@ -228,24 +230,26 @@ sheet['p'+str(fila)]="CustomerLocation"                 # hcsSite.type
 sheet['t'+str(fila)]="false"                            #hcsSite.isDefaultLocation
 sheet['i'+str(fila)]=data['fmosite']['uniorg']          #hcsSite.ExternalID
 sheet['u'+str(fila)]="PROVISIONADA"                     #hcsSite.Description
-sheet['s'+str(fila)]=data['fmosite']['Address1']        #hcsSite.sho
-sheet['w'+str(fila)]=fmonagencia                        #hcsSite.ExtendedName
+sheet['s'+str(fila)]=data['fmosite']['Address1']        #hcsSite.Address1## SI HASH Info
+sheet['w'+str(fila)]=agencia['name']                        #hcsSite.ExtendedName
 #sheet['y'+str(fila)]="false"                           #hcsSite.isDeletable
 sheet['z'+str(fila)]=fmoenvconfig['hcsSitecustomer']    #hcsSite.customer
 sheet['aa'+str(fila)]=fmoenvconfig['fmonetworklocale']  #hcsSite.country
-sheet['ae'+str(fila)]=fmoenvconfig['ndlr']              #ndlr
-sheet['af'+str(fila)]=fmonagencia                       #name
-sheet['ag'+str(fila)]=fmonagencia                       #hcsSiteDAT.name
+sheet['ae'+str(fila)]=voss_macros.SITE_NDLR              #ndlr
+sheet['af'+str(fila)]=agencia['name']                       #name
+sheet['ag'+str(fila)]=agencia['name']                       #hcsSiteDAT.name
 sheet['ah'+str(fila)]="true"                            # hcsSiteDAT.push_cucm
-sheet['ai'+str(fila)]="true"                            # hcsSiteDAT.create_admin @@@
+sheet['ai'+str(fila)]="false"                            # hcsSiteDAT.create_admin @@@
 sheet['al'+str(fila)]="false"                           #hcsSiteDAT.migrate
-sheet['am'+str(fila)]=fmoenvconfig['fmonetworklocale']  #country
-sheet['an'+str(fila)]=fmonagencia                       # siteNdlr.name
-sheet['ao'+str(fila)]=fmoenvconfig['siteNdlrreference'] #siteNdlr.reference
-sheet['ak'+str(fila)]=fmoenvconfig['hierarchynode']     #hcsSiteDAT.HierarchyPath
-sheet['ap'+str(fila)]=fmoenvconfig['adminuserpass']     #data_user.password
-sheet['aq'+str(fila)]=fmoenvconfig['hcsrole']           #hcs_role.clonedRole
-sheet['ar'+str(fila)]=fmonagencia+"SiteAdmin"           #hcs_role.role
+#sheet['am'+str(fila)]=fmoenvconfig['fmonetworklocale'] #country
+sheet['am'+str(fila)]=customer_config.SITE_COUNTRY      #country
+sheet['an'+str(fila)]=agencia['name']                   # siteNdlr.name
+sheet['ao'+str(fila)]=fmoenvconfig['siteNdlrreference']             #siteNdlr.reference
+#sheet['ao'+str(fila)]=voss_macros.SITE_NDLR_REFERENCE
+sheet['ak'+str(fila)]=customer_config.CUSTOMER_HIERARCHYNODE     #hcsSiteDAT.HierarchyPath
+#sheet['ap'+str(fila)]=customer_config.ADMINUSERPASS     #data_user.password
+#sheet['aq'+str(fila)]=fmoenvconfig['hcsrole']           #hcs_role.clonedRole
+#sheet['ar'+str(fila)]=agencia['name']+"SiteAdmin"           #hcs_role.role
 sheet['at'+str(fila)]="false"                           #hcs_role.role
 sheet['as'+str(fila)]="en-us"                           #hcs_role.role
 
@@ -258,7 +262,7 @@ fmoidagencia=input("(II) Inserta el ID de la agencia? ")  ## Temporal
 ################################################################
 ## Guardamos datos FMO
 ## SITE
-data['fmosite']['name']=fmonagencia
+data['fmosite']['name']=agencia['name']
 data['fmosite']['id']=fmoidagencia
 data['fmosite']['cmg']=fmocmg
 ## E164

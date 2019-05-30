@@ -461,7 +461,7 @@ cmositeinfo=siteinfoadmin.get_cmositedata(slc,f)
 ## Verificamos si hemos encontrado datos en el EXCEL
 if not len(cmositeinfo) or not len(cmonums):
     print("(EE): NO EXISTE el SITE ",slc," en el fichero de datos",cmositeinfo, file=f)
-    print("(EE): Es necesario actualizar el fichero ",cmositedata, file=f)
+    print("(EE): Es necesario actualizar el fichero ",cmositeinfo, file=f)
     print("(EE): Y volver a ejecutar el comando ", file=f)
 
 

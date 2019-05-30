@@ -58,9 +58,7 @@ def get_cmositedata(slc,logfile):
     print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
 
     for row in sheet.rows:
-        #print("<<>>",row[0].value)
         #DEBUG
-        #print(sheet.cell(row=fila,column=col).value)
         #rslc="1"+str(row[0].value)
         rslc=str(row[0].value)
         if rslc[1:].startswith(slc):
@@ -88,7 +86,10 @@ def get_cmositedata(slc,logfile):
             siteinfo['epnm']=BRAZIL_CC+row[PHONE_POS].value[1:3]+row[PHONE_POS].value[5:]
 
             print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
+            print("(II)",row,file=logfile)
+            print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
             print(json.dumps(siteinfo,sort_keys=True,indent=2), file=logfile)
             print("SITEINFOADMIN@GET_CMOSITEDATA -----------------------------", file=logfile)
+            break
 
     return siteinfo
