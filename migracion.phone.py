@@ -119,14 +119,14 @@ for row in csv_f:
     # WR BLK OUTPUT DATA
     if len(row) != 0: # Me salto las líneas vacias
         if row['CALL MANAGER GROUP NAME'] == cmocmg:
-            if "CALL MANAGER 3" in csv_f.fieldnames:
-                if debug:
-                    print("(DD) CMG:"+row['CALL MANAGER GROUP NAME']+", CM1:"+row['CALL MANAGER 1']+", CM2:"+row['CALL MANAGER 2']+", CM3:"+row['CALL MANAGER 3'], file=f)
-                cmocm={row['CALL MANAGER 1'],row['CALL MANAGER 2'],row['CALL MANAGER 3']}
-            else:
+            if "CALL MANAGER 2" in csv_f.fieldnames:
                 if debug:
                     print("(DD) CMG:"+row['CALL MANAGER GROUP NAME']+", CM1:"+row['CALL MANAGER 1']+", CM2:"+row['CALL MANAGER 2'], file=f)
                 cmocm={row['CALL MANAGER 1'],row['CALL MANAGER 2']}
+            else:
+                if debug:
+                    print("(DD) CMG:"+row['CALL MANAGER GROUP NAME']+", CM1:"+row['CALL MANAGER 1']+", CM2:", file=f)
+                cmocm={row['CALL MANAGER 1']}
 fin.close()
 
 if len(cmocm)==0:
@@ -184,9 +184,12 @@ for row in csv_f:
 
             ## DEBUG: CMO
             if not userid:
-                print("CMO,"+clusterid+","+cmocmserver[0]['cmserver']+","+cmocmserver[1]['cmserver']+","+row['Device Type']+","+row['Device Name']+",,,"+webaccess+","+row['Secure Shell User']+","+row['Secure Shell Password'], file=cmoresetphone)
+                ## print("CMO,"+clusterid+","+cmocmserver[0]['cmserver']+","+cmocmserver[1]['cmserver']+","+row['Device Type']+","+row['Device Name']+",,,"+webaccess+","+row['Secure Shell User']+","+row['Secure Shell Password'], file=cmoresetphone)
+                print("CMO,"+clusterid+","+cmocmserver[0]['cmserver']+","+","+row['Device Type']+","+row['Device Name']+",,,"+webaccess+","+row['Secure Shell User']+","+row['Secure Shell Password'], file=cmoresetphone)
             else:
-                print("CMO,"+clusterid+","+cmocmserver[0]['cmserver']+","+cmocmserver[1]['cmserver']+","+row['Device Type']+","+row['Device Name']+","+row['Owner User ID']+","+fmopass+","+webaccess+","+row['Secure Shell User']+","+row['Secure Shell Password'], file=cmoresetphone)
+                ## DOS SUBS
+                #print("CMO,"+clusterid+","+cmocmserver[0]['cmserver']+","+cmocmserver[1]['cmserver']+","+row['Device Type']+","+row['Device Name']+","+row['Owner User ID']+","+fmopass+","+webaccess+","+row['Secure Shell User']+","+row['Secure Shell Password'], file=cmoresetphone)
+                print("CMO,"+clusterid+","+cmocmserver[0]['cmserver']+","+","+row['Device Type']+","+row['Device Name']+","+row['Owner User ID']+","+fmopass+","+webaccess+","+row['Secure Shell User']+","+row['Secure Shell Password'], file=cmoresetphone)
             ## YAML??
 
 fin.close()
