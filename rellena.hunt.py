@@ -73,6 +73,8 @@ inputfilehl = clusterpath+"/huntlist.csv"       ## ORIGINAL
 inputfilehp = clusterpath+"/huntpilot.csv"      ## ORIGINAL
 #inputfilelg = clusterpath+"/linegroup.csv"      ## ORIGINAL ->
 inputfilelg = clusterpath+"/linegroup.mod2.csv"      ## MOD
+inputfilerp = clusterpath+"/routepattern.csv"      ## MOD
+
 
 templateblkfile = "blk/06.hunt-template.xlsx" # SIN DATAINPUT
 outputblkfile = sitepath+"/06.hunt."+siteslc+".xlsx"
@@ -107,6 +109,8 @@ isrcss=customerid+"-ISR-CSS"
 dirnumpt=customerid+"-DirNum-PT"
 dirnumcss=customerid+"-DirNum-CSS"
 fwdhuntcss=cucdmsite+"-HPFWD-CSS"
+fwdhuntpt=cucdmsite+"-HPFWD-PT"
+stdslrgrl=customerid+"-BRADP-Standard-SLRG-RL"
 
 # CMO File INPUT DATA
 fgw = open(inputfilehp,"r")
@@ -431,6 +435,40 @@ for row in csv_f:               ## WR BLK OUTPUT DATA
 
 ## CMO File INPUT DATA: Close
 fgw.close()
+
+######################################################
+## CMO HUNT LIST FWD: Route Pattern
+######################################################
+print("(II): CMO Hunt Lists FWD Route Pattern ",siteslc,file=f)
+
+# CMO File INPUT DATA
+fgw = open(inputfilerp,"r")
+#csv_f = csv.reader(fgw)
+csv_f = csv.DictReader(fgw)
+
+fila=5
+
+for row in csv_f:           ## WR BLK OUTPUT DATA
+    if len(row) != 0:   ## Me salto las líneas vacias
+        if row['ROUTE PARTITION'].startswith(siteslc) and row['ROUTE PARTITION'].endswith('Intrasite-XLT-PT'):
+            print("(II): CMO Route Pattern FWD found ",row['ROUTE PATTERN'],":",siteslc,"Intrasite-XLT-PT",file=f)
+
+            sheet =  blk["RP"]
+            sheet['B'+str(fila)]=hierarchynode+"."+fmositename
+            sheet['C'+str(fila)]=action
+            #sheet['D'+str(fila)]="name:"+row[3] # Search field
+            ######################################################
+            sheet['n'+str(fila)]=fwdhuntpt                  # routepartition
+            sheet['u'+str(fila)]=row['ROUTE PATTERN']     # routepattern
+            sheet['v'+str(fila)]=stdslrgrl                  #destination.routeListName
+            sheet['z'+str(fila)]=row['DESCRIPTION']         #description
+            sheet['ao'+str(fila)]="OnNet"                   #networkLocation
+
+
+
+## CMO File INPUT DATA: Close
+fgw.close()
+
 
 ## FMO File OUTPUT DATA: Close
 blk.save(outputblkfile)
