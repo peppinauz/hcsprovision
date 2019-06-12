@@ -463,7 +463,7 @@ for row in csv_f:           ## WR BLK OUTPUT DATA
             sheet['v'+str(fila)]=stdslrgrl                  #destination.routeListName
             sheet['z'+str(fila)]=row['DESCRIPTION']         #description
             sheet['ao'+str(fila)]="OnNet"                   #networkLocation
-
+            fila=fila+1
 
 
 ## CMO File INPUT DATA: Close
