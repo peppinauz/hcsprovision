@@ -8,7 +8,7 @@ import time
 import sys
 import json
 
-from modules import voss_macros
+#from modules import voss_macros
 from modules import customer_config
 
 if len(sys.argv) != 5:
@@ -235,7 +235,7 @@ sheet['w'+str(fila)]=agencia['name']                        #hcsSite.ExtendedNam
 #sheet['y'+str(fila)]="false"                           #hcsSite.isDeletable
 sheet['z'+str(fila)]=fmoenvconfig['hcsSitecustomer']    #hcsSite.customer
 sheet['aa'+str(fila)]=fmoenvconfig['fmonetworklocale']  #hcsSite.country
-sheet['ae'+str(fila)]=voss_macros.SITE_NDLR              #ndlr
+sheet['ae'+str(fila)]=fmoenvconfig['ndlr']              #ndlr
 sheet['af'+str(fila)]=agencia['name']                       #name
 sheet['ag'+str(fila)]=agencia['name']                       #hcsSiteDAT.name
 sheet['ah'+str(fila)]="true"                            # hcsSiteDAT.push_cucm
