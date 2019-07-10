@@ -139,7 +139,7 @@ if xcambio == 'S':
     while running:
         opcion=int(input("\n\n Menu de cambios: \n[1] Site name? \n[2] Número de cabecera \n[0] Salir \n"))
         if opcion == 1:     ## Cambiar nombre del site
-            print("\n\nEste es el nombre que hemos detectado >>> ",agencia[0]['name'],"\n")
+            print("\n\nEste es el nombre que hemos detectado >>> ",agencia['name'],"\n")
             print("Indicar el nuevo nombre de la agencia, por ejemplo:")
             print("\tSao Paolo, Morumbi,...")
             scambio=input("Nuevo nombre: ")
